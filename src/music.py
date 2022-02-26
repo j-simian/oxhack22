@@ -9,4 +9,5 @@ class Music:
         pygame.mixer.music.play()
 
     def play_hihat(self):
-        pygame.mixer.Sound("./res/hat.mp3").play()
+        # pygame.mixer.Sound("./res/hat.mp3").play()
+        pass
