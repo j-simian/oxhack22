@@ -5,11 +5,12 @@ SCREEN_WIDTH = 1920/2
 SCREEN_HEIGHT = 1080/2
 
 COLOURS = [
-        Color("#2E3440"), Color("#3B4252"), Color("#434C5E"), Color("#4C566A"),
-        Color("#D8DEE9"), Color("#E5E9F0"), Color("#ECEFF4"),
-        Color("#8FBCBB"), Color("#88C0D0"), Color("#81A1C1"), Color("#5E81AC"),
-        Color("#BF616A"), Color("#D08770"), Color("#EBCB8B"), Color("#A3BE8C"), Color("#B48EAD")
+        Color("#2E3440"), Color("#3B4252"), Color("#434C5E"), Color("#4C566A"), # DARK GREY COLOURS, INCREASING BRIGHTNESS
+        Color("#D8DEE9"), Color("#E5E9F0"), Color("#ECEFF4"), # WHITE COLOURS, INCREASING BRIGHTNESS
+        Color("#8FBCBB"), Color("#88C0D0"), Color("#81A1C1"), Color("#5E81AC"), # BLUE COLOURS, INCREASING BRIGHTNESS
+        Color("#BF616A"), Color("#D08770"), Color("#EBCB8B"), Color("#A3BE8C"), Color("#B48EAD") # RED, ORANGE, YELLOW, GREEN, PURPLE
         ]
+
 
 class Gfx:
     def __init__(self, timer):

@@ -8,10 +8,13 @@ SQUARE_OFFSET = 5
 
 class Board:
 
-    player = 0
+    player_pos = (0, 0)
 
     beats = [1] * 100
     squares = [[0, 0], [2, 1], [5, -1], [5, 0], [2, 1], [2, 1], [2, -1]]
+
+    def render_player(self, screen):
+        pygame.draw.circle(screen, gfx.COLOURS[9], (self.player_pos[0], self.player_pos[1]), SQUARE_SIZE*2)
 
     def render(self, screen):
         x = gfx.SCREEN_WIDTH/2
@@ -28,4 +31,6 @@ class Board:
             angle += i[1]
             x += math.cos(angle*math.pi/2)*i[0] * (DIST)
             y += math.sin(angle*math.pi/2)*i[0] * (DIST)
+        self.render_player(screen)
+
 
