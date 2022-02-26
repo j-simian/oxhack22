@@ -58,7 +58,7 @@ class Board:
         np, _, nt = self.squares[self.timer.active_beat+1]
         x = tp[0] + (self.timer.global_timer - tt) / (nt - tt) * (np[0] - tp[0])
         y = tp[1] + (self.timer.global_timer - tt) / (nt - tt) * (np[1] - tp[1])
-        pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE)
+        pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE * 1.5 if timer.is_in_perfect_window() else PLAYER_SIZE)
         if self.mode == 0:
             self.cameraOffsetX = -x
             self.cameraOffsetY = -y
