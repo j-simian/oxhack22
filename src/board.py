@@ -11,7 +11,7 @@ START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2]
 class Board:
     player_pos = [START_TILE[0], START_TILE[1]]
     player_dist = 0
-    player_last_tile = 0
+    player_last_tile = -1
     player_angle = 0
 
     def __init__(self, beatmap):
@@ -39,27 +39,26 @@ class Board:
         self.render_player(screen)
 
     def tick_player(self, delta):
-        self.player_dist += delta 
+        self.player_dist += delta * 3
         self.player_angle = self.cumAngle(self.player_last_tile) 
-        self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle) * self.player_dist * DIST
-        self.player_pos[1] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle) * self.player_dist * DIST
+        self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle * math.pi / 180.0) * self.player_dist * DIST
+        self.player_pos[1] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle * math.pi / 180.0) * self.player_dist * DIST
         if self.player_dist > self.squares[self.player_last_tile][0]: 
-            if self.player_last_tile == len(self.squares):
+            if self.player_last_tile < len(self.squares) - 1:
                 self.player_last_tile += 1
             self.player_dist = 0
 
 
     def cumAngle(self, x):
-        angle = sum(y for x,y in self.squares[0:x-1])  
+        angle = sum(y for x,y in self.squares[0:x])  
         return angle
 
     def cumPos(self, n):
-        angle = 0
         x = START_TILE[0]
         y = START_TILE[1]
         for k in range(0, n):
             i = self.squares[k]
-            angle += i[1]
-            x += math.cos(angle)*i[0] * (DIST)
-            y += math.sin(angle)*i[0] * (DIST)
+            angle = self.cumAngle(k)
+            x += math.cos(angle * math.pi / 180.0) * i[0] * (DIST)
+            y += math.sin(angle * math.pi / 180.0) * i[0] * (DIST)
         return (x, y)
