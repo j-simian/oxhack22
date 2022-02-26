@@ -10,7 +10,7 @@ music = None
 score = 0
 
 def handleUI(events):
-    global running, timer
+    global running, timer, score
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -18,6 +18,7 @@ def handleUI(events):
 
         elif event.type == pygame.KEYDOWN:
             music.play_hihat()
+            score+=1
             if timer.is_in_beat_window():
                 print(f"On time {timer}")
             else:
@@ -33,7 +34,7 @@ def main():
     running = True
     while running:
         timer.update()
-        gfx.render()
+        gfx.render(score)
         handleUI(pygame.event.get())
 
 if __name__ == "__main__":
