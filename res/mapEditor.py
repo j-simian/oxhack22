@@ -4,7 +4,7 @@ from beatmap import Beatmap
 
 
 def main():
-    beatmap = Beatmap("map.json")
+    beatmap = Beatmap("res/map.json")
     x = input()
     while(x != "q"):
         val = float(x)/8 + beatmap.times[len(beatmap.times)-1]
@@ -20,7 +20,7 @@ def main():
         beatmap.times[i] = [math.floor(beatmap.times[i]*2), int(((beatmap.times[i]*2)%1)*4), 4]
         jsonmap["beats"].append([beatmap.times[i], beatmap.angles[i]])
     print(jsonmap)
-    upload = open("map.json", "w")
+    upload = open("res/map.json", "w")
     upload.write(json.dumps(jsonmap))
     upload.close()
 
