@@ -6,6 +6,7 @@ import time
 import pygame 
 from board import Board
 
+gfx = None
 running = False
 timer = None
 music = None
@@ -19,13 +20,14 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score
+    global running, timer, score, gfx
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
+            gfx.updateDelta()
             music.play_hihat()
             if timer.is_in_beat_window():
                 print(f"On time {timer.delta()}")
@@ -34,7 +36,7 @@ def handleUI(events):
             score += timer.calculate_score()
 
 def main():
-    global running, timer, music, score
+    global running, timer, music, score, gfx
 
     try:
         joystick = startJoystick()

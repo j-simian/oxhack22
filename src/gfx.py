@@ -14,6 +14,7 @@ COLOURS = [
 class Gfx:
     def __init__(self, timer):
         self.timer = timer
+        self.delta = 0
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Hackathon rhythm game")
@@ -30,18 +31,23 @@ class Gfx:
     def swapBuffers(self):
         pygame.display.flip()
 
-    def renderTimer(self):
-        pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
+    def updateDelta(self):
+        if self.timer.is_in_beat_window():
+            self.delta = self.timer.delta()
+        else:
+            self.delta = -2
 
+        self.swapBuffers()
 
     def render(self,score, board):
         self.clearScreen() 
         board.render(self.screen)
         
+        pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
+        pygame.draw.rect(self.screen, COLOURS[7], pygame.Rect(90*(self.delta+1),0,20,50))
+
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
         img = myfont.render(f"score: {int(score)}", 1, COLOURS[3])
         self.screen.blit(img, (100, 100))
-
-        self.renderTimer()
 
         self.swapBuffers()
