@@ -28,7 +28,7 @@ def handleUI(events):
 def main():
     global running, timer, music, score
 
-    timer = Timer()
+    timer = Timer([i for i in range(100) if i % 3 != 0])
     gfx = Gfx(timer)
     music = Music()
     board = Board()
