@@ -10,6 +10,8 @@ SCALE = 50
 
 class Board:
     def __init__(self, beatmap):
+        self.mode = 1
+        self.update = False
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
         self.cur_square = 0
@@ -44,6 +46,7 @@ class Board:
     def render_player(self, screen):
         if self.cur_square < len(self.squares) and self.time > self.squares[self.cur_square][2]:
             self.cur_square += 1
+            self.update = True
         if self.cur_square == len(self.squares):
             pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.squares[-1][0]), PLAYER_SIZE)
             return
@@ -53,5 +56,10 @@ class Board:
         x = tp[0] + (self.time - tt) / (nt - tt) * (np[0] - tp[0])
         y = tp[1] + (self.time - tt) / (nt - tt) * (np[1] - tp[1])
         pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE)
-        self.cameraOffsetX = -x
-        self.cameraOffsetY = -y
+        if self.mode == 0:
+            self.cameraOffsetX = -x
+            self.cameraOffsetY = -y
+        if self.update:
+            self.cameraOffsetX = -x
+            self.cameraOffsetY = -y
+            self.update = False

@@ -6,7 +6,11 @@ import time
 import pygame 
 from board import Board
 
+
+ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
+danceMode = False
 gfx = None
+board = None
 running = False
 timer = None
 music = None
@@ -20,13 +24,16 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx
+    global running, timer, score, gfx, board, danceMode
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
+            if danceMode and (event.type == pygame.JOYBUTTONDOWN):
+                if event.button < 8:
+                    print(ANGLE_MAP[event.button])
             gfx.updateDelta()
             music.play_hihat()
             if timer.is_valid_hit():
@@ -42,10 +49,11 @@ def update():
         score -= 1000
 
 def main():
-    global running, timer, music, score, gfx
+    global running, timer, music, score, gfx, board, danceMode
 
     try:
         joystick = startJoystick()
+        danceMode = True
     except pygame.error:
         pass
 
