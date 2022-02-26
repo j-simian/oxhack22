@@ -70,13 +70,10 @@ class Gfx:
     def drawHealthBar(self):
         pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
-    def lerp(self, a, b, t):
-        return ((a*t) + (b*(1-t)))
-
     def drawCompass(self):
         centreX = 120
         centreY = 120
-        offset = self.lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
+        offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
         for i in range(8):
             xdif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*60
             ydif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*60
@@ -102,3 +99,6 @@ class Gfx:
         self.screen.blit(img, (SCREEN_WIDTH - width - 10, 10))
 
         self.swapBuffers()
+
+def lerp(a, b, t):
+    return ((a*t) + (b*(1-t)))
