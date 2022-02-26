@@ -3,8 +3,8 @@ import time
 BPM = 128
 TIME_PER_BEAT = 60 / BPM
 
-PERFECT_TOLERANCE = 0.03
 MAX_TOLERANCE = 0.20
+PERFECT_TOLERANCE_FRAC = 0.2
 
 class Timer:
     def __init__(self):
@@ -36,13 +36,14 @@ class Timer:
         return self.in_beat_window
 
     def delta(self):
-        return abs(self.global_timer - TIME_PER_BEAT / 2)
+        return abs(self.global_timer - TIME_PER_BEAT / 2) / (MAX_TOLERANCE / 2)
 
     def calculate_score(self):
         delta = self.delta()
-        if delta < PERFECT_TOLERANCE:
+        print(delta)
+        if delta < PERFECT_TOLERANCE_FRAC:
             return 1000
-        elif delta < MAX_TOLERANCE:
-            return 1000 * (1 - delta / (MAX_TOLERANCE / 2))
+        elif delta < 1:
+            return 1000 * (1 - delta)
         else:
             return -1000
