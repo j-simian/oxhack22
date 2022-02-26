@@ -23,14 +23,15 @@ class Board:
         return (START_TILE[0] + x * SCALE + self.cameraOffsetX*SCALE, START_TILE[1] + y * SCALE+self.cameraOffsetY*SCALE)
 
     def render(self, screen):
-        #poscur, dircur, timecur = self.beatmap.pos[self.timer.active_beat], self.beatmap.angles[self.timer.active_beat], self.beatmap.times[self.timer.active_beat]
-        #opakity = gfx.lerp(1,0,(max(0,min(1,-2*(timecur - self.timer.global_timer)))))
-        #kolor = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dircur, 4)]
-        #kolor = kolor.lerp(gfx.COLOURS[0],opakity)
-        #pygame.draw.circle(screen, kolor, self._scale_position(poscur), SQUARE_SIZE)
+        if self.timer.active_beat > 0:
+            pos, dir, time = self.beatmap.pos[self.timer.active_beat-1], self.beatmap.angles[self.timer.active_beat-1], self.beatmap.times[self.timer.active_beat-1]
+            opacity = gfx.lerp(0,1,(max(0,min(1,-2*(time - self.timer.global_timer)))))
+            color = gfx.COMPASSCOLOURS[dir//45].lerp(gfx.COLOURS[0], 1 - opacity)
+            pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
+
         for i in reversed(range(self.timer.active_beat, self.beatmap.len)):
             pos, dir, time = self.beatmap.pos[i], self.beatmap.angles[i], self.beatmap.times[i]
-            color = gfx.COMPASSCOLOURS[(dir//45)]
+            color = gfx.COMPASSCOLOURS[dir//45]
             opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))
             color = color.lerp(gfx.COLOURS[0], 1 - opacity)
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
