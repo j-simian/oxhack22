@@ -13,7 +13,10 @@ score = 0
 
 def startJoystick():
     pygame.joystick.init()
-    return pygame.joystick.Joystick(0)
+    if pygame.joystick.get_count:
+        return pygame.joystick.Joystick(0)
+    else:
+        return 0
 
 def handleUI(events):
     global running, timer, score
