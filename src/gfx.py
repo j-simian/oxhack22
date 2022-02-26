@@ -20,7 +20,7 @@ class Gfx:
     def __init__(self, timer):
         self.timer = timer
         self.existence = 2
-        self.deltas = deque(([(0,self.timer.global_timer)]*5))
+        self.deltas = deque(([(-10,self.timer.global_timer)]*5))
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Hackathon rhythm game")
