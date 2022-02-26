@@ -1,25 +1,40 @@
 import pygame 
 import gfx
-from time import time
+import time
 
 bpm = 128
 time_per_beat = 60 / bpm
-# running, start_time, beat_count
+CORRECT_HIT_TOLERANCE = 0.01
 
 
+global_timer = 0
+# last_time, running
+
+MILLIS_EVT = pygame.USEREVENT + 1
+
+
+start = time.time()
 
 def handleUI(events):
-    global running, beat_count
+    global running, global_timer, last_time
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
         elif event.type == pygame.KEYDOWN:
-            # TODO adjust beat_count on missed beat
-            beat_count += 1
-            now = time()
-            exp = start_time + time_per_beat * beat_count
-            print(now - exp)
+            print(global_timer, time.time() - start, time_per_beat)
+            delta = global_timer - time_per_beat
+            if abs(delta) < CORRECT_HIT_TOLERANCE:
+                print(f"On time {delta}")
+            elif delta < 0:
+                print(f"Early {delta}")
+            else:
+                print(f"Late {delta}")
+            global_timer -= time_per_beat
+        elif event.type == MILLIS_EVT:
+            now = time.time()
+            global_timer += now - last_time
+            last_time = now
 
 
 def startMusic():
@@ -31,13 +46,13 @@ def startMusic():
     print('a')
 
 def main():
-    global running, start_time, beat_count
+    global running, last_time
     print("Hello world")
     gfx.initGfx()
     startMusic()
     running = True
-    start_time = time()
-    beat_count = 0
+    last_time = time.time()
+    pygame.time.set_timer(MILLIS_EVT, 1)
     while running:
         gfx.render()
         handleUI(pygame.event.get())
