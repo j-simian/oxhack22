@@ -39,6 +39,7 @@ def main():
     start_time = time()
     beat_count = 0
     while running:
+        gfx.render()
         handleUI(pygame.event.get())
     print("Done")
 
