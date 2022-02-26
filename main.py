@@ -12,6 +12,7 @@ def initGfx():
     clearScreen()
     swapBuffers()
     
+    
 def clearScreen():
     screen.fill((0, 0, 0))
 
@@ -24,12 +25,24 @@ def handleUI(events):
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:
+                startMusic()
 
+
+def startMusic():
+    pygame.mixer.init()
+    pygame.mixer.music.load("song.mp3")
+    pygame.mixer.music.play(loops=-1)
+    # pygame.mixer.music.set_volume(0.7)
+    pygame.mixer.music.play()
+    print('a')
 
 def main():
     global running
     print("Hello world")
     initGfx()
+    # startMusic()
     running = True
     while running:
         handleUI(pygame.event.get())
