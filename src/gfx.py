@@ -83,9 +83,10 @@ class Gfx:
             pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 20)
     def update(self, delta):
         if self.health < 0:
-            self.timer.active = False
+            return True
         else:
             self.health = min(1, self.health + 0.06*delta)
+        return False
 
     def render(self, score, board):
         self.clearScreen() 

@@ -6,7 +6,6 @@ SMALL_TOLERANCE_FRAC = 0.6
 
 class Timer:
     def __init__(self, beatmap):
-        self.active = False
         self.beatmap = beatmap
         self.current_beat = 0
         self.active_beat = 0
@@ -33,8 +32,8 @@ class Timer:
             if self.global_timer >= self.beatmap.times[self.active_beat]:
                 self.active_beat += 1
                 if self.active_beat == self.beatmap.len:
-                    self.active = False
-
+                    return True
+        return False
 
     # Returns the score for this hit.
     # Handles double-hit on the same beat as a fail.

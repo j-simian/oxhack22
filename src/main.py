@@ -15,7 +15,9 @@ running = False
 timer = None
 music = None
 score = 0
+whichHits = [0,0,0] #perfects, non-perfect hits, misses
 pressedKey = None
+paused = False
 
 def startJoystick():
     pygame.joystick.init()
@@ -34,7 +36,7 @@ def handleUI(events):
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
             if not started:
                 started = True
-                timer.active = True
+                unpause()
                 continue
 
             try:
@@ -64,7 +66,24 @@ def update():
         else:
             gfx.health -= HEALTH_LOSS
             print(f"Miss {timer.delta()}")
-        score += timer.register_hit(dir)
+        scoreIncrement = timer.register_hit(dir)
+        score += scoreIncrement
+        if scoreIncrement<0:
+            whichHits[0]+=1
+        elif scoreIncrement<1000:
+            whichHits[1]+=1
+        else:
+            whichHits[2]+=1
+
+def pause():
+    global paused, music
+    music.stop()
+    paused = True
+
+def unpause():
+    global paused, music
+    music.start()
+    paused = False
 
 def main():
     global running, timer, music, score, gfx, board, paused, started
@@ -82,7 +101,6 @@ def main():
     while running and not started:
         gfx.render(score, board)
         handleUI(pygame.event.get())
-    music.start_music()
 
     last_time = time.time()
     while running:
@@ -90,10 +108,13 @@ def main():
         delta = now - last_time
         last_time = now
 
-        if timer.active:
-            timer.update(delta)
-            gfx.update(delta)
-            update()
+        if not paused:
+            if timer.update(delta):
+                pause()
+            elif gfx.update(delta):
+                pause()
+            else:
+                update()
 
         gfx.render(score, board)
         handleUI(pygame.event.get())
