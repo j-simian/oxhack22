@@ -5,7 +5,7 @@ import music
 
 bpm = 128
 time_per_beat = 60 / bpm
-CORRECT_HIT_TOLERANCE = 0.01
+CORRECT_HIT_TOLERANCE = 1
 
 
 global_timer = 0

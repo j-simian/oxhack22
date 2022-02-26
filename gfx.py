@@ -1,5 +1,7 @@
 import pygame
+from pygame.locals import *
 import main
+
 
 screen_width = 1920/2
 screen_height = 1080/2
@@ -20,7 +22,7 @@ def initGfx():
     swapBuffers()
     
 def clearScreen():
-    if main.global_timer <= 0.1:
+    if main.in_beat_window:
         screen.fill(colours[4])
     else:
         screen.fill(colours[0])
@@ -33,4 +35,5 @@ def render():
     global screen
     global colours
     clearScreen() 
-    pygame.draw.rect(screen, colours[11], pygame.Rect(0.5, 0.5, 1, 1))
+    print("redner")
+    pygame.draw.rect(screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
