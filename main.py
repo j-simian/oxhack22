@@ -21,6 +21,7 @@ def handleUI(events):
             running = False
 
         elif event.type == pygame.KEYDOWN:
+            pygame.mixer.Sound("./res/hat.mp3").play()
             delta = global_timer - time_per_beat
             if abs(delta) < CORRECT_HIT_TOLERANCE:
                 print(f"On time {delta}")
