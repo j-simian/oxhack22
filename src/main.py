@@ -15,6 +15,7 @@ running = False
 timer = None
 music = None
 score = 0
+pressedKey = None
 
 def startJoystick():
     pygame.joystick.init()
@@ -24,14 +25,15 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board
+    global running, timer, score, gfx, board, started, pressedKey
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
-            if not timer.active:
+            if not started:
+                started = True
                 timer.active = True
                 continue
 
@@ -43,24 +45,29 @@ def handleUI(events):
             except (KeyError, ValueError):
                 print("Invalid key", event)
                 continue
-            gfx.updateDelta(dir)
-            music.play_hihat()
-            if timer.is_valid_hit(dir):
-                print(f"On time {timer.delta()}")
-            else:
-                gfx.health -= HEALTH_LOSS
-                print(f"Miss {timer.delta()}")
-            score += timer.register_hit(dir)
+            pressedKey = dir
 
 def update():
-    global timer, score, gfx
+    global timer, score, gfx, pressedKey
     if timer.was_last_missed_oneshot():
         print("Skipped")
         gfx.health -= HEALTH_LOSS
         score -= 1000
 
+    if pressedKey is not None:
+        dir = pressedKey
+        pressedKey = None
+        gfx.updateDelta(dir)
+        music.play_hihat()
+        if timer.is_valid_hit(dir):
+            print(f"On time {timer.delta()}")
+        else:
+            gfx.health -= HEALTH_LOSS
+            print(f"Miss {timer.delta()}")
+        score += timer.register_hit(dir)
+
 def main():
-    global running, timer, music, score, gfx, board, paused
+    global running, timer, music, score, gfx, board, paused, started
 
     joystick = startJoystick()
 
@@ -71,7 +78,8 @@ def main():
     board = Board(beatmap, timer)
 
     running = True
-    while running and not timer.active:
+    started = False
+    while running and not started:
         gfx.render(score, board)
         handleUI(pygame.event.get())
     music.start_music()
