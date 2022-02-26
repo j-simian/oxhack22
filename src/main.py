@@ -33,7 +33,10 @@ def handleUI(events):
 def main():
     global running, timer, music, score
 
-    joystick = startJoystick()
+    try:
+        joystick = startJoystick()
+    except pygame.error:
+        pass
 
     timer = Timer([i for i in range(100) if i % 3 != 0])
     beatmap = load_beatmap()
