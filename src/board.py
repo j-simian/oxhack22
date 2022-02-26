@@ -17,7 +17,7 @@ class Board:
     def __init__(self, beatmap):
         self.squares = [(beatmap.times[0], beatmap.angles[0])]
         for i in range(1, beatmap.len):
-            self.squares.append((3 * (beatmap.times[i] - beatmap.times[i-1]), beatmap.angles[i] / 90))
+            self.squares.append((3 * (beatmap.times[i] - beatmap.times[i-1]), beatmap.angles[i]))
         print(self.squares)
 
     def render_player(self, screen):
@@ -45,7 +45,7 @@ class Board:
         self.player_dist += delta 
         self.player_angle = self.cumAngle(self.player_last_tile) * math.pi/2
         self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle) * self.player_dist * DIST
-        self.player_pos[0] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle) * self.player_dist * DIST
+        self.player_pos[1] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle) * self.player_dist * DIST
         if self.player_dist > self.squares[self.player_last_tile][0]: 
             self.player_last_tile += 1
             self.player_dist = 0
@@ -61,6 +61,6 @@ class Board:
         for k in range(0, n):
             i = self.squares[k]
             angle += i[1]
-            x += math.cos(angle*math.pi/2)*i[0] * (DIST)
-            y += math.sin(angle*math.pi/2)*i[0] * (DIST)
+            x += math.cos(angle)*i[0] * (DIST)
+            y += math.sin(angle)*i[0] * (DIST)
         return (x, y)
