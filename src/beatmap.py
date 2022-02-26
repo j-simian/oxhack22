@@ -8,4 +8,9 @@ def load_beatmap():
     offset=float(maplines[1])
     beatTimes=[]
     for eachline in maplines[2:]:
-        beatTimes.append(int(eachline))
+        beatFraction=eachline.split(',')
+        if len(beatFraction)==1:
+            beatTimes.append(offset+(60/mapbpm)*int(beatFraction[0]))
+        else:
+            beatTimes.append(offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2])))
+    return(beatTimes)
