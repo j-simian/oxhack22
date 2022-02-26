@@ -1,7 +1,7 @@
 from timer import Timer
 from gfx import Gfx
 from music import Music
-from beatmap import load_beatmap
+from beatmap import Beatmap
 import time
 import pygame 
 from board import Board
@@ -49,12 +49,11 @@ def main():
     except pygame.error:
         pass
 
-    timer = Timer([i for i in range(100) if i % 3 != 0])
-    beatmap = load_beatmap()[0]
+    beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
     gfx = Gfx(timer)
     music = Music()
-    board = Board()
+    board = Board(beatmap)
 
     music.start_music()
     running = True

@@ -5,7 +5,7 @@ PERFECT_TOLERANCE_FRAC = 0.2
 
 class Timer:
     def __init__(self, beatmap):
-        self.beatmap = deque(sorted(beatmap))
+        self.beatmap = deque(sorted(beatmap.times))
         self.hit_this_beat = False
         self.miss_last_beat = False
 
