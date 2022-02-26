@@ -18,10 +18,11 @@ def handleUI(events):
 
         elif event.type == pygame.KEYDOWN:
             music.play_hihat()
-            score+=1
             if timer.is_in_beat_window():
+                score+=1
                 print(f"On time {timer}")
             else:
+                score-=1
                 print(f"Miss {timer}")
 
 def main():
