@@ -6,6 +6,7 @@ import time
 import pygame 
 from board import Board
 
+gfx = None
 running = False
 timer = None
 music = None
@@ -19,22 +20,29 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score
+    global running, timer, score, gfx
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
+            gfx.updateDelta()
             music.play_hihat()
-            if timer.is_in_beat_window():
+            if timer.is_valid_hit():
                 print(f"On time {timer.delta()}")
             else:
                 print(f"Miss {timer.delta()}")
-            score += timer.calculate_score()
+            score += timer.register_hit()
+
+def update():
+    global timer, score
+    if timer.was_last_missed_oneshot():
+        print("Skipped")
+        score -= 1000
 
 def main():
-    global running, timer, music, score
+    global running, timer, music, score, gfx
 
     try:
         joystick = startJoystick()
@@ -42,7 +50,7 @@ def main():
         pass
 
     timer = Timer([i for i in range(100) if i % 3 != 0])
-    beatmap = load_beatmap()
+    beatmap = load_beatmap()[0]
     timer = Timer(beatmap)
     gfx = Gfx(timer)
     music = Music()
@@ -56,9 +64,10 @@ def main():
         delta = now - last_time
         last_time = now
 
+        handleUI(pygame.event.get())
         timer.update(delta)
         gfx.render(score, board, delta)
-        handleUI(pygame.event.get())
+        update()
 
 if __name__ == "__main__":
     main()
