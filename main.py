@@ -3,6 +3,7 @@ from gfx import Gfx
 from music import Music
 import time
 import pygame 
+from board import Board
 
 running = False
 timer = None
@@ -35,7 +36,7 @@ def main():
     running = True
     while running:
         timer.update()
-        gfx.render(score)
+        gfx.render(score, board)
         handleUI(pygame.event.get())
 
 if __name__ == "__main__":
