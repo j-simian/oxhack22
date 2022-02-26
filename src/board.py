@@ -6,6 +6,8 @@ SQUARE_SIZE = 10
 PLAYER_SIZE = 15
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
 SCALE = 200
+LOOKAHEAD_TIME = 3
+LOOKAHEAD_OPACITY_MIN = 0.3
 
 
 class Board:
@@ -35,8 +37,10 @@ class Board:
         return (START_TILE[0] + x * SCALE + self.cameraOffsetX*SCALE, START_TILE[1] + y * SCALE+self.cameraOffsetY*SCALE)
 
     def render(self, screen):
-        for pos, dir, _ in reversed(self.squares[self.timer.active_beat+1:]):
+        for pos, dir, time in reversed(self.squares[self.timer.active_beat+1:]):
             color = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dir, 4)]
+            opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))
+            color = color.lerp(gfx.COLOURS[0], 1 - opacity)
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
 
