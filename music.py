@@ -1,3 +1,5 @@
+import pygame
+
 def startMusic():
     pygame.mixer.init()
     pygame.mixer.music.load("./res/song.mp3")
