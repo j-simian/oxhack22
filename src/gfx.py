@@ -17,13 +17,13 @@ COLOURS = [
         ]
 
 COMPASSCOLOURS = [
-    Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD"),
-    Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD")
+    Color("#BF616A"), Color("#D08770"), Color("#EBCB8B"), Color("#A3BE8C"), Color("#B48EAD"), Color("#8FBCBB"), Color("#88C0D0"), Color("#81A1C1")
 ]
 
 
 class Gfx:
-    def __init__(self, timer):
+    def __init__(self, timer, bm):
+        self.beatmap  = bm
         self.health = 1
         self.timer = timer
         self.existence = 2
@@ -70,12 +70,16 @@ class Gfx:
     def drawHealthBar(self):
         pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
+    def lerp(self, a, b, t):
+        return ((a*t) + (b*(1-t)))
+
     def drawCompass(self):
         centreX = 120
         centreY = 120
+        offset = self.lerp(self.beatmap.angles_abs[self.timer.active_beat], self.beatmap.angles_abs[self.timer.current_beat], max(self.timer.delta(), 0))
         for i in range(8):
-            xdif = math.sin(i*(math.pi/4))*60
-            ydif = math.cos(i*(math.pi/4))*60
+            xdif = math.sin((i*(math.pi/4))+offset)*60
+            ydif = math.cos((i*(math.pi/4))+offset)*60
             pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 20)
     def update(self, delta):
         if self.health < 0:

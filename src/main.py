@@ -73,7 +73,7 @@ def main():
 
     beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
-    gfx = Gfx(timer)
+    gfx = Gfx(timer, beatmap)
     music = Music()
     board = Board(beatmap, timer)
 
