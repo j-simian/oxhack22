@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-import main
 
 
 screen_width = 1920/2
@@ -13,27 +12,26 @@ colours = [
         ("#BF616A"), ("#D08770"), ("#EBCB8B"), ("#A3BE8C"), ("#B48EAD")
         ]
 
-def initGfx():
-    global screen
-    pygame.init()
-    screen = pygame.display.set_mode((screen_width, screen_height))
-    pygame.display.set_caption("Hackathon rhythm game")
-    clearScreen()
-    swapBuffers()
+class Gfx:
+    def __init__(self, timer):
+        self.timer = timer
+        pygame.init()
+        self.screen = pygame.display.set_mode((screen_width, screen_height))
+        pygame.display.set_caption("Hackathon rhythm game")
+        self.clearScreen()
+        self.swapBuffers()
     
-def clearScreen():
-    if main.in_beat_window:
-        screen.fill(colours[4])
-    else:
-        screen.fill(colours[0])
+    def clearScreen(self):
+        if self.timer.is_in_beat_window():
+            self.screen.fill(colours[4])
+        else:
+            self.screen.fill(colours[0])
 
-def swapBuffers():
-    pygame.display.flip()
+    def swapBuffers(self):
+        pygame.display.flip()
 
-
-def render():
-    global screen
-    global colours
-    clearScreen() 
-    pygame.draw.rect(screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
-    swapBuffers()
+    def render(self):
+        global colours
+        self.clearScreen() 
+        pygame.draw.rect(self.screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
+        self.swapBuffers()

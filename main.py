@@ -1,22 +1,15 @@
-import pygame 
-import gfx
+from timer import Timer
+from gfx import Gfx
 import time
 import music
+import pygame 
 
-bpm = 128
-time_per_beat = 60 / bpm
-CORRECT_HIT_TOLERANCE = 1
-
-
-global_timer = 0
-in_beat_window = False
-# last_time, running
-
-MILLIS_EVT = pygame.USEREVENT + 1
+running = False
+timer = None
 
 
 def handleUI(events):
-    global running, global_timer, last_time, in_beat_window
+    global running, timer
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -24,45 +17,23 @@ def handleUI(events):
 
         elif event.type == pygame.KEYDOWN:
             pygame.mixer.Sound("./res/hat.mp3").play()
-            if in_beat_window:
-                print(f"On time {global_timer}")
+            if timer.is_in_beat_window():
+                print(f"On time {timer}")
             else:
-                print(f"Miss {global_timer}")
-
-        elif event.type == MILLIS_EVT:
-            now = time.time()
-            prev_timer = global_timer
-            global_timer += now - last_time
-            last_time = now
-
-            def just_crossed_time(prev, cur, time):
-                return prev < time and cur >= time
-            if just_crossed_time(prev_timer, global_timer, time_per_beat / 2 - CORRECT_HIT_TOLERANCE):
-                in_beat_window = True
-                print("Beat start")
-            if just_crossed_time(prev_timer, global_timer, time_per_beat / 2):
-                print("BEAT")
-            if just_crossed_time(prev_timer, global_timer, time_per_beat / 2 + CORRECT_HIT_TOLERANCE):
-                in_beat_window = False
-                print("Beat end")
-
-            if global_timer >= time_per_beat:
-                global_timer -= time_per_beat
+                print(f"Miss {timer}")
 
 def main():
-    global running, last_time
-    print("Hello world")
-    gfx.initGfx()
+    global running, timer
+
+    timer = Timer()
+    gfx = Gfx(timer)
     music.startMusic()
+
     running = True
-    last_time = time.time()
-    pygame.time.set_timer(MILLIS_EVT, 1)
     while running:
-        handleUI(pygame.event.get())
+        timer.update()
         gfx.render()
-    print("Done")
+        handleUI(pygame.event.get())
 
 if __name__ == "__main__":
     main()
-
-
