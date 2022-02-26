@@ -5,33 +5,37 @@ PERFECT_TOLERANCE_FRAC = 0.2
 
 class Timer:
     def __init__(self, beatmap):
-        self.finished = False
+        self.active = True
         self.beatmap = beatmap
         self.current_beat = 0
+        self.active_beat = 0
         self.hit_this_beat = False
         self.miss_last_beat = False
-
         self.global_timer = 0
 
     def update(self, delta):
+        if not self.active:
+            return
         prev_timer = self.global_timer
         self.global_timer += delta
 
-        def just_crossed_time(prev, cur, time):
-            return prev < time and cur >= time
+        if self.current_beat < self.beatmap.len:
+            beat_time = self.beatmap.times[self.current_beat]
+            beat_tol = self._current_beat_tolerance_oneway()
+            if prev_timer < beat_time <= self.global_timer:
+                print("BEAT")
 
-        if self.current_beat == self.beatmap.len:
-            return
+            if self.global_timer >= beat_time + beat_tol:
+                self.current_beat += 1
+                self.miss_last_beat = not self.hit_this_beat
+                self.hit_this_beat = False
 
-        beat_time = self.beatmap.times[self.current_beat]
-        beat_tol = self._current_beat_tolerance_oneway()
-        if just_crossed_time(prev_timer, self.global_timer, beat_time):
-            print("BEAT")
+        if self.active_beat < self.beatmap.len:
+            if self.global_timer >= self.beatmap.times[self.active_beat]:
+                self.active_beat += 1
+                if self.active_beat == self.beatmap.len:
+                    self.active = False
 
-        if self.global_timer >= beat_time + beat_tol:
-            self.current_beat += 1
-            self.miss_last_beat = not self.hit_this_beat
-            self.hit_this_beat = False
 
     # Returns the score for this hit.
     # Handles double-hit on the same beat as a fail.
@@ -74,5 +78,4 @@ class Timer:
             tol = self._current_beat_tolerance_oneway()
             return (self.global_timer - self.beatmap.times[self.current_beat]) / tol
         else:
-            self.finished = True
             return -100

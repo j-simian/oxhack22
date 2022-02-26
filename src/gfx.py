@@ -66,8 +66,8 @@ class Gfx:
 
     def render(self,score, board, delta):
         if self.health<0:
-            self.timer.finished = True
-        if (not self.timer.finished):
+            self.timer.active = False
+        if self.timer.active:
             self.health+=0.0001*delta*600
         if self.health>1:
             self.health = 1

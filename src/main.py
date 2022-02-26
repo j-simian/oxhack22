@@ -66,7 +66,7 @@ def main():
     timer = Timer(beatmap)
     gfx = Gfx(timer)
     music = Music()
-    board = Board(beatmap)
+    board = Board(beatmap, timer)
 
     while paused:
         gfx.render(score, board, 0)
