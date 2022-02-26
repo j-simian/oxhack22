@@ -9,14 +9,15 @@ SQUARE_OFFSET = 5
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
 
 class Board:
-
     player_pos = [START_TILE[0], START_TILE[1]]
     player_dist = 0
     player_last_tile = 0
     player_angle = 0
 
-    beats = [1] * 100
-    squares = [[0, 0], [2, 1], [5, -1], [5, 0], [2, 1], [2, 1], [2, -1]]
+    def __init__(self, beatmap):
+        self.squares = [(0, 0)]
+        for i in range(beatmap.len):
+            self.squares.append((beatmap.times[i], beatmap.angles[i] / 90))
 
     def render_player(self, screen):
         pygame.draw.circle(screen, gfx.COLOURS[9], (self.player_pos[0], self.player_pos[1]), SQUARE_SIZE*2)
