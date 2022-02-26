@@ -40,7 +40,6 @@ class Board:
 
     def tick_player(self, delta):
         self.player_dist += delta * 0.01
-        print(self.player_dist)
         self.player_pos[0] = self.squares[self.player_last_tile][0] + math.cos(sum(y for x,y in self.squares[0:self.player_last_tile])*math.pi/2) * self.player_dist * DIST
         self.player_pos[1] = self.squares[self.player_last_tile][1] + math.sin(sum(y for x,y in self.squares[0:self.player_last_tile])*math.pi/2) * self.player_dist * DIST
         print(self.player_pos[0])
