@@ -7,6 +7,9 @@ PLAYER_SIZE = 15
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
 SCALE = 50
 
+CAMERA_OFFSET_X = 100
+CAMERA_OFFSET_Y = 100
+
 class Board:
     def __init__(self, beatmap):
         self.cur_square = 0
@@ -34,7 +37,7 @@ class Board:
 
     def _scale_position(self, p):
         x, y = p
-        return (START_TILE[0] + x * SCALE, START_TILE[1] + y * SCALE)
+        return (START_TILE[0] + x * SCALE + CAMERA_OFFSET_X, START_TILE[1] + y * SCALE+CAMERA_OFFSET_Y)
 
     def render(self, screen, delta):
         self.time += delta
