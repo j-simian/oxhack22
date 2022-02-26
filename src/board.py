@@ -3,7 +3,8 @@ import gfx
 import math
 
 DIST = 30
-SQUARE_SIZE = 10 
+SQUARE_SIZE = 10
+CIRCLE_SIZE = 15 
 SQUARE_OFFSET = 5
 
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
@@ -20,7 +21,7 @@ class Board:
             self.squares.append((3 * (beatmap.times[i] - beatmap.times[i-1]), beatmap.angles[i]))
 
     def render_player(self, screen):
-        pygame.draw.circle(screen, gfx.COLOURS[9], (self.player_pos[0], self.player_pos[1]), SQUARE_SIZE*2)
+        pygame.draw.circle(screen, gfx.COLOURS[13], (self.player_pos[0], self.player_pos[1]), CIRCLE_SIZE)
 
     def render(self, screen, delta):
         x = START_TILE[0]
