@@ -1,3 +1,4 @@
+#TODO: make it work lol
 import pygame 
 import gfx
 from time import time
