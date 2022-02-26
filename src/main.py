@@ -1,6 +1,7 @@
 from timer import Timer
 from gfx import Gfx
 from music import Music
+from beatmap import load_beatmap
 import time
 import pygame 
 from board import Board
@@ -35,6 +36,8 @@ def main():
     joystick = startJoystick()
 
     timer = Timer([i for i in range(100) if i % 3 != 0])
+    beatmap = load_beatmap()
+    timer = Timer(beatmap)
     gfx = Gfx(timer)
     music = Music()
     board = Board()
