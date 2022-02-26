@@ -46,8 +46,14 @@ def handleUI(events):
 
             try:
                 if event.type == pygame.JOYBUTTONDOWN:
+                    if event.button == 9:
+                        score = 0
+                        main()
                     dir = ANGLE_MAP[event.button]
                 else:
+                    if event.key == pygame.K_r:
+                        score = 0
+                        main()
                     dir = KEY_MAP[chr(event.key)]
             except (KeyError, ValueError):
                 print("Invalid key", event)
@@ -126,10 +132,9 @@ def main():
                     update()
 
             gfx.render(score, board)
-            handleUI(pygame.event.get())
         else:
             gfxResults.render(score, completed, board)
-            handleUI(pygame.event.get())
+        handleUI(pygame.event.get())
 
 if __name__ == "__main__":
     main()
