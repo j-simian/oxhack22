@@ -19,17 +19,21 @@ def swapBuffers():
     pygame.display.flip()
 
 def handleUI(events):
-    global softDrop
+    global running
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
+            running = False
 
 
 def main():
+    global running
     print("Hello world")
     initGfx()
-    while True:
+    running = True
+    while running:
         handleUI(pygame.event.get())
+    print("Done")
 
 if __name__ == "__main__":
     main()
