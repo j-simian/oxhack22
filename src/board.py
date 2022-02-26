@@ -44,13 +44,13 @@ class Board:
         self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle) * self.player_dist * DIST
         self.player_pos[1] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle) * self.player_dist * DIST
         if self.player_dist > self.squares[self.player_last_tile][0]: 
-            self.player_last_tile += 1
+            if self.player_last_tile == len(self.squares):
+                self.player_last_tile += 1
             self.player_dist = 0
 
 
     def cumAngle(self, x):
         angle = sum(y for x,y in self.squares[0:x-1])  
-        print(angle)
         return angle
 
     def cumPos(self, n):
