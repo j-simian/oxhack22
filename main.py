@@ -30,6 +30,7 @@ def main():
     timer = Timer()
     gfx = Gfx(timer,score)
     music = Music()
+    board = Board()
 
     running = True
     while running:

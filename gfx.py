@@ -31,7 +31,7 @@ class Gfx:
     def swapBuffers(self):
         pygame.display.flip()
 
-    def render(self,score):
+    def render(self,score, board):
         self.score = score
         global COLOURS
         self.clearScreen() 
