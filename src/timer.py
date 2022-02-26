@@ -64,6 +64,8 @@ class Timer:
 
     def is_in_beat_window(self):
         return abs(self.delta()) < 1
+    def is_in_perfect_window(self):
+        return abs(self.delta()) < PERFECT_TOLERANCE_FRAC
     def is_valid_hit(self, dir):
         return (self.is_in_beat_window() and not self.hit_this_beat
             and self.current_beat < self.beatmap.len 
