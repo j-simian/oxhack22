@@ -1,12 +1,15 @@
 import pygame
 
 class Music:
-    def start_music(self):
+    def __init__(self):
         pygame.mixer.init()
         pygame.mixer.music.load("./res/song.wav")
-        pygame.mixer.music.play(loops=-1)
-        # pygame.mixer.music.set_volume(0.7)
+
+    def start(self):
         pygame.mixer.music.play()
+
+    def stop(self):
+        pygame.mixer.music.pause()
 
     def play_hihat(self):
         # pygame.mixer.Sound("./res/hat.mp3").play()
