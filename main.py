@@ -13,28 +13,29 @@ global_timer = 0
 MILLIS_EVT = pygame.USEREVENT + 1
 
 
-start = time.time()
-
 def handleUI(events):
     global running, global_timer, last_time
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
+
         elif event.type == pygame.KEYDOWN:
-            print(global_timer, time.time() - start, time_per_beat)
             delta = global_timer - time_per_beat
             if abs(delta) < CORRECT_HIT_TOLERANCE:
                 print(f"On time {delta}")
-            elif delta < 0:
-                print(f"Early {delta}")
+                global_timer -= time_per_beat
             else:
-                print(f"Late {delta}")
-            global_timer -= time_per_beat
+                print(f"Early {delta}")
+
         elif event.type == MILLIS_EVT:
             now = time.time()
             global_timer += now - last_time
             last_time = now
+
+            if global_timer > time_per_beat + CORRECT_HIT_TOLERANCE:
+                print(f"Missed beat {global_timer}")
+                global_timer -= time_per_beat
 
 
 def startMusic():
