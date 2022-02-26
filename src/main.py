@@ -15,6 +15,7 @@ running = False
 timer = None
 music = None
 score = 0
+whichHits = [0,0,0] #perfects, non-perfect hits, misses
 pressedKey = None
 
 def startJoystick():
@@ -64,7 +65,14 @@ def update():
         else:
             gfx.health -= HEALTH_LOSS
             print(f"Miss {timer.delta()}")
-        score += timer.register_hit(dir)
+        scoreIncrement = timer.register_hit(dir)
+        score += scoreIncrement
+        if scoreIncrement<0:
+            whichHits[0]+=1
+        elif scoreIncrement<1000:
+            whichHits[1]+=1
+        else:
+            whichHits[2]+=1
 
 def main():
     global running, timer, music, score, gfx, board, paused, started
