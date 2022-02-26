@@ -8,7 +8,7 @@ from board import Board
 
 HEALTH_LOSS = 0.1
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
-danceMode = False
+KEY_MAP = {'a': 180, 'q': 225, 'w': 270, 'e': 315, 'd': 0, 'x': 45, 's': 90, 'z': 135}
 gfx = None
 board = None
 running = False
@@ -18,30 +18,35 @@ score = 0
 
 def startJoystick():
     pygame.joystick.init()
-    if pygame.joystick.get_count:
+    if pygame.joystick.get_count() > 0:
         return pygame.joystick.Joystick(0)
     else:
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, danceMode
+    global running, timer, score, gfx, board
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
-            if danceMode and (event.type == pygame.JOYBUTTONDOWN):
-                if event.button < 8:
-                    print(ANGLE_MAP[event.button])
+            try:
+                if event.type == pygame.JOYBUTTONDOWN:
+                    dir = ANGLE_MAP[event.button]
+                else:
+                    dir = KEY_MAP[chr(event.key)]
+            except KeyError:
+                print("Invalid key", event)
+                continue
             gfx.updateDelta()
             music.play_hihat()
-            if timer.is_valid_hit():
+            if timer.is_valid_hit(dir):
                 print(f"On time {timer.delta()}")
             else:
                 gfx.health -= HEALTH_LOSS
                 print(f"Miss {timer.delta()}")
-            score += timer.register_hit()
+            score += timer.register_hit(dir)
 
 def update():
     global timer, score, gfx
@@ -51,13 +56,9 @@ def update():
         score -= 1000
 
 def main():
-    global running, timer, music, score, gfx, board, danceMode
+    global running, timer, music, score, gfx, board
 
-    try:
-        joystick = startJoystick()
-        danceMode = True
-    except pygame.error:
-        pass
+    startJoystick()
 
     beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
