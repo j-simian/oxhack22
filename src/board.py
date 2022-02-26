@@ -41,10 +41,10 @@ class Board:
         self.render_player(screen)
 
     def tick_player(self, delta):
-        self.player_dist += delta * 0.01
+        self.player_dist += delta 
         self.player_angle = self.cumAngle(self.player_last_tile) * math.pi/2
-        self.player_pos[0] = self.squares[self.player_last_tile][0] # + math.cos(self.player_angle) * self.player_dist * DIST
-        self.player_pos[1] = self.squares[self.player_last_tile][1] # + math.sin(self.player_angle) * self.player_dist * DIST
+        self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle) * self.player_dist * DIST
+        self.player_pos[0] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle) * self.player_dist * DIST
         if self.player_dist > self.squares[self.player_last_tile][0]: 
             self.player_last_tile += 1
             self.player_dist = 0
@@ -52,3 +52,14 @@ class Board:
 
     def cumAngle(self, x):
         return sum(y for x,y in self.squares[0:x]) * math.pi/2
+
+    def cumPos(self, n):
+        angle = 0
+        x = START_TILE[0]
+        y = START_TILE[1]
+        for k in range(0, n):
+            i = self.squares[k]
+            angle += i[1]
+            x += math.cos(angle*math.pi/2)*i[0] * (DIST)
+            y += math.sin(angle*math.pi/2)*i[0] * (DIST)
+        return (x, y)
