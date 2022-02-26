@@ -72,10 +72,10 @@ class Gfx:
                 h = ((self.existence-timeDif)*50)/self.existence
             else:
                 h = 0
-            pygame.draw.rect(self.screen, COLOURS[10].lerp(COLOURS[11],lerpAmount), pygame.Rect(ERROR_WIDTH+  95*(self.deltas[i][0]+1),ERROR_HEIGHT,10,h))        
+            pygame.draw.rect(self.screen, COMPASSCOLOURS[6].lerp(COMPASSCOLOURS[1],lerpAmount), pygame.Rect(ERROR_WIDTH+  95*(self.deltas[i][0]+1),ERROR_HEIGHT,10,h))        
         
     def drawHealthBar(self):
-        pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
+        pygame.draw.rect(self.screen, COMPASSCOLOURS[2], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
     def drawCompass(self):
         centreX = 70
