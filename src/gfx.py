@@ -20,7 +20,7 @@ class Gfx:
     def __init__(self, timer):
         self.timer = timer
         self.existence = 2
-        self.deltas = deque(([(0,self.timer.global_timer)]*5))
+        self.deltas = deque(([(-10,self.timer.global_timer)]*5))
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Hackathon rhythm game")
@@ -68,7 +68,7 @@ class Gfx:
 
         myfont = pygame.font.SysFont("Comic Sans MS", 48)
         width, height = myfont.size(str(int(score)))
-        img = myfont.render(str(int(score)), 1, COLOURS[2])
+        img = myfont.render(str(int(score)), 1, COLOURS[6])
         self.screen.blit(img, (SCREEN_WIDTH - width - 10, 10))
 
         self.swapBuffers()
