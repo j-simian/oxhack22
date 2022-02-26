@@ -38,9 +38,9 @@ class Gfx:
     def swapBuffers(self):
         pygame.display.flip()
 
-    def updateDelta(self):
+    def updateDelta(self,dir):
         self.deltas.popleft()
-        if self.timer.is_in_beat_window():
+        if self.timer.is_valid_hit(dir):
             self.deltas.append((self.timer.delta(), self.timer.global_timer))
         else:
             self.deltas.append((-10, self.timer.global_timer))

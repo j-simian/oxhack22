@@ -33,24 +33,24 @@ def handleUI(events):
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
             if paused:
-                paused = False
-                continue
-            try:
-                if event.type == pygame.JOYBUTTONDOWN:
-                    dir = ANGLE_MAP[event.button]
-                else:
-                    dir = KEY_MAP[chr(event.key)]
-            except (KeyError, ValueError):
-                print("Invalid key", event)
-                continue
-            gfx.updateDelta()
-            music.play_hihat()
-            if timer.is_valid_hit(dir):
-                print(f"On time {timer.delta()}")
+                paused=False
             else:
-                gfx.health -= HEALTH_LOSS
-                print(f"Miss {timer.delta()}")
-            score += timer.register_hit(dir)
+                try:
+                    if event.type == pygame.JOYBUTTONDOWN:
+                        dir = ANGLE_MAP[event.button]
+                    else:
+                        dir = KEY_MAP[chr(event.key)]
+                except (KeyError, ValueError):
+                    print("Invalid key", event)
+                    continue
+                gfx.updateDelta(dir)
+                music.play_hihat()
+                if timer.is_valid_hit(dir):
+                    print(f"On time {timer.delta()}")
+                else:
+                    gfx.health -= HEALTH_LOSS
+                    print(f"Miss {timer.delta()}")
+                score += timer.register_hit(dir)
 
 def update():
     global timer, score, gfx
