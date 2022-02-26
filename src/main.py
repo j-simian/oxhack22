@@ -15,7 +15,7 @@ running = False
 timer = None
 music = None
 score = 0
-paused = True
+pressedKey = None
 
 def startJoystick():
     pygame.joystick.init()
@@ -25,42 +25,49 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, paused
+    global running, timer, score, gfx, board, started, pressedKey
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
-            if paused:
-                paused=False
-            else:
-                try:
-                    if event.type == pygame.JOYBUTTONDOWN:
-                        dir = ANGLE_MAP[event.button]
-                    else:
-                        dir = KEY_MAP[chr(event.key)]
-                except (KeyError, ValueError):
-                    print("Invalid key", event)
-                    continue
-                gfx.updateDelta(dir)
-                music.play_hihat()
-                if timer.is_valid_hit(dir):
-                    print(f"On time {timer.delta()}")
+            if not started:
+                started = True
+                timer.active = True
+                continue
+
+            try:
+                if event.type == pygame.JOYBUTTONDOWN:
+                    dir = ANGLE_MAP[event.button]
                 else:
-                    gfx.health -= HEALTH_LOSS
-                    print(f"Miss {timer.delta()}")
-                score += timer.register_hit(dir)
+                    dir = KEY_MAP[chr(event.key)]
+            except (KeyError, ValueError):
+                print("Invalid key", event)
+                continue
+            pressedKey = dir
 
 def update():
-    global timer, score, gfx
+    global timer, score, gfx, pressedKey
     if timer.was_last_missed_oneshot():
         print("Skipped")
         gfx.health -= HEALTH_LOSS
         score -= 1000
 
+    if pressedKey is not None:
+        dir = pressedKey
+        pressedKey = None
+        gfx.updateDelta(dir)
+        music.play_hihat()
+        if timer.is_valid_hit(dir):
+            print(f"On time {timer.delta()}")
+        else:
+            gfx.health -= HEALTH_LOSS
+            print(f"Miss {timer.delta()}")
+        score += timer.register_hit(dir)
+
 def main():
-    global running, timer, music, score, gfx, board, paused
+    global running, timer, music, score, gfx, board, paused, started
 
     joystick = startJoystick()
 
@@ -70,21 +77,25 @@ def main():
     music = Music()
     board = Board(beatmap, timer)
 
-    while paused:
-        gfx.render(score, board, 0)
-        handleUI(pygame.event.get())
-
-    music.start_music()
     running = True
+    started = False
+    while running and not started:
+        gfx.render(score, board)
+        handleUI(pygame.event.get())
+    music.start_music()
+
     last_time = time.time()
-    delta=0
     while running:
         now = time.time()
         delta = now - last_time
         last_time = now
-        timer.update(delta)
-        update()
-        gfx.render(score, board, delta)
+
+        if timer.active:
+            timer.update(delta)
+            gfx.update(delta)
+            update()
+
+        gfx.render(score, board)
         handleUI(pygame.event.get())
 
 if __name__ == "__main__":

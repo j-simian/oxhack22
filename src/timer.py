@@ -6,7 +6,7 @@ SMALL_TOLERANCE_FRAC = 0.6
 
 class Timer:
     def __init__(self, beatmap):
-        self.active = True
+        self.active = False
         self.beatmap = beatmap
         self.current_beat = 0
         self.active_beat = 0
@@ -15,8 +15,6 @@ class Timer:
         self.global_timer = 0
 
     def update(self, delta):
-        if not self.active:
-            return
         prev_timer = self.global_timer
         self.global_timer += delta
 

@@ -41,7 +41,7 @@ class Board:
         self.render_player(screen)
 
     def render_player(self, screen):
-        if self.timer.active_beat == len(self.squares):
+        if self.timer.active_beat+1 == len(self.squares):
             pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.squares[-1][0]), PLAYER_SIZE)
             return
 
