@@ -26,13 +26,8 @@ class Board:
                 x += d[0] * (time - beatmap.times[i-1])
                 y += d[1] * (time - beatmap.times[i-1])
 
-            if angle == 90:
-                d = (d[1], -d[0])
-            elif angle == -90:
-                d = (-d[1], d[0])
-            else:
-                print("invalid angle {beatmap.angles[i]}")
-                exit(1)
+            ar = angle / 180 * math.pi
+            d = (d[0] * math.cos(ar) - d[1] * math.sin(ar), d[0] * math.sin(ar) + d[1] * math.cos(ar))
             self.squares.append(((x, y), angle, time))
 
     def _scale_position(self, p):
@@ -41,13 +36,9 @@ class Board:
 
     def render(self, screen, delta):
         self.time += delta
-        for pos, dir, _ in self.squares:
-            currColour = gfx.COLOURS[4]
-            if dir == 90:
-                currColour = gfx.COLOURS[11]
-            elif dir == -90:
-                currColour = gfx.COLOURS[7]
-            pygame.draw.circle(screen, currColour, self._scale_position(pos), SQUARE_SIZE)
+        for pos, dir, _ in reversed(self.squares):
+            color = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dir, 4)]
+            pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
 
     def render_player(self, screen):
@@ -61,4 +52,4 @@ class Board:
         np, _, nt = self.squares[self.cur_square]
         x = tp[0] + (self.time - tt) / (nt - tt) * (np[0] - tp[0])
         y = tp[1] + (self.time - tt) / (nt - tt) * (np[1] - tp[1])
-        pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), SQUARE_SIZE*2)
+        pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE)
