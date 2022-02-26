@@ -16,7 +16,7 @@ class Board:
 
     def __init__(self, beatmap):
         self.squares = [(beatmap.times[0], beatmap.angles[0])]
-        for i in range(beatmap.len):
+        for i in range(1, beatmap.len):
             self.squares.append((3 * (beatmap.times[i] - beatmap.times[i-1]), beatmap.angles[i] / 90))
         print(self.squares)
 
