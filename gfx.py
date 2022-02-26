@@ -35,5 +35,5 @@ def render():
     global screen
     global colours
     clearScreen() 
-    print("redner")
     pygame.draw.rect(screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
+    swapBuffers()
