@@ -36,8 +36,8 @@ class Board:
 
             pygame.draw.circle(screen, currColour, (x, y), SQUARE_SIZE)
             angle += i[1]
-            x += math.cos(angle*math.pi/2)*i[0] * (DIST)
-            y += math.sin(angle*math.pi/2)*i[0] * (DIST)
+            x += math.cos(angle)*i[0] * (DIST)
+            y += math.sin(angle)*i[0] * (DIST)
         self.tick_player(delta)
         self.render_player(screen)
 
@@ -52,7 +52,7 @@ class Board:
 
 
     def cumAngle(self, x):
-        return sum(y for x,y in self.squares[0:x]) * math.pi/2
+        return sum(y for x,y in self.squares[0:x]) 
 
     def cumPos(self, n):
         angle = 0
