@@ -2,28 +2,29 @@ import math
 import json
 
 class Beatmap:
-    def __init__(self, file):
+    def __init__(self, file=None):
         self.len = 0
         self.times = []
         self.angles = []
         self.angles_abs = []
         self.pos = []
-        mapjson = json.loads(open(file, "r").read())
-        mapbpm=float(mapjson["bpm"])
-        self.bpm = mapbpm
-        offset=float(mapjson["offset"])
-        self.offset = offset
-        beatTimes=[]
-        beatAngles=[]
-        for each in mapjson["beats"]:
-            beatFraction=each[0]
-            if len(beatFraction)==1:
-                time = offset+(60/mapbpm)*int(beatFraction[0])
-            else:
-                time = offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
-            angle = each[1]
-            self.add(time, angle, False)
-
+        
+        if file is not None:
+            mapjson = json.loads(open(file, "r").read())
+            mapbpm=float(mapjson["bpm"])
+            self.bpm = mapbpm
+            offset=float(mapjson["offset"])
+            self.offset = offset
+            beatTimes=[]
+            beatAngles=[]
+            for each in mapjson["beats"]:
+                beatFraction=each[0]
+                if len(beatFraction)==1:
+                    time = offset+(60/mapbpm)*int(beatFraction[0])
+                else:
+                    time = offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
+                angle = each[1]
+                self.add(time, angle, False)
 
     def add(self, time, angle, abs):
         self.len += 1

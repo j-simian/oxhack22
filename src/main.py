@@ -2,6 +2,7 @@ from timer import Timer
 from gfx import Gfx
 from gfxResults import GfxResults
 from music import Music
+from const import EDITOR_MODE
 from beatmap import Beatmap
 import time
 import pygame 
@@ -63,8 +64,8 @@ def handleUI(events):
             pressedKey = dir
 
 def update():
-    global timer, score, gfx, pressedKey
-    if timer.was_last_missed_oneshot():
+    global timer, score, gfx, pressedKey, beatmap
+    if not EDITOR_MODE and timer.was_last_missed_oneshot():
         print("Skipped")
         gfx.health -= HEALTH_LOSS
         score -= 1000
@@ -72,21 +73,24 @@ def update():
     if pressedKey is not None:
         dir = pressedKey
         pressedKey = None
-        gfx.updateDelta(dir)
-        music.play_hihat()
-        if timer.is_valid_hit(dir):
-            print(f"On time {timer.delta()}")
+        if EDITOR_MODE:
+            beatmap.add(timer.global_timer, dir, True)
         else:
-            gfx.health -= HEALTH_LOSS
-            print(f"Miss {timer.delta()}")
-        scoreIncrement = timer.register_hit(dir)
-        score += scoreIncrement
-        if scoreIncrement<0:
-            whichHits[0]+=1
-        elif scoreIncrement<1000:
-            whichHits[1]+=1
-        else:
-            whichHits[2]+=1
+            gfx.updateDelta(dir)
+            music.play_hihat()
+            if timer.is_valid_hit(dir):
+                print(f"On time {timer.delta()}")
+            else:
+                gfx.health -= HEALTH_LOSS
+                print(f"Miss {timer.delta()}")
+            scoreIncrement = timer.register_hit(dir)
+            score += scoreIncrement
+            if scoreIncrement<0:
+                whichHits[0]+=1
+            elif scoreIncrement<1000:
+                whichHits[1]+=1
+            else:
+                whichHits[2]+=1
 
 def pause():
     global paused, music, ended
@@ -100,11 +104,14 @@ def unpause():
     paused = False
 
 def main():
-    global running, timer, music, score, gfx, gfxResults, board, paused, started, completed
+    global running, timer, music, score, gfx, gfxResults, board, paused, started, completed, beatmap
 
     joystick = startJoystick()
 
-    beatmap = Beatmap("res/map.json")
+    if EDITOR_MODE:
+        beatmap = Beatmap()
+    else:
+        beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
@@ -137,6 +144,10 @@ def main():
         else:
             gfxResults.render(score, completed, board)
         handleUI(pygame.event.get())
+
+    if EDITOR_MODE:
+        print(beatmap.times)
+        print(beatmap.angles)
 
 if __name__ == "__main__":
     main()

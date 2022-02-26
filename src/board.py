@@ -1,6 +1,7 @@
 import pygame
 import gfx
 import math
+from const import EDITOR_MODE
 
 SQUARE_SIZE = 10
 PLAYER_SIZE = 15
@@ -23,23 +24,31 @@ class Board:
         return (START_TILE[0] + x * SCALE + self.cameraOffsetX*SCALE, START_TILE[1] + y * SCALE+self.cameraOffsetY*SCALE)
 
     def render(self, screen):
-        if self.timer.active_beat > 0:
+        if self.timer.active_beat > 0 and not EDITOR_MODE:
             pos, dir, time = self.beatmap.pos[self.timer.active_beat-1], self.beatmap.angles[self.timer.active_beat-1], self.beatmap.times[self.timer.active_beat-1]
             opacity = gfx.lerp(0,1,(max(0,min(1,-2*(time - self.timer.global_timer)))))
             color = gfx.COMPASSCOLOURS[dir//45].lerp(gfx.COLOURS[0], 1 - opacity)
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
 
-        for i in reversed(range(self.timer.active_beat, self.beatmap.len)):
+        if EDITOR_MODE:
+            iter = range(0, self.beatmap.len)
+        else:
+            iter = reversed(range(self.timer.active_beat, self.beatmap.len))
+        for i in iter:
             pos, dir, time = self.beatmap.pos[i], self.beatmap.angles[i], self.beatmap.times[i]
             color = gfx.COMPASSCOLOURS[dir//45]
-            opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))
+            if EDITOR_MODE:
+                opacity = 1
+            else:
+                opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))
             color = color.lerp(gfx.COLOURS[0], 1 - opacity)
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
 
     def render_player(self, screen):
         if self.timer.active_beat == self.beatmap.len:
-            pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.beatmap.pos[-1]), PLAYER_SIZE)
+            if self.beatmap.len > 0:
+                pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.beatmap.pos[-1]), PLAYER_SIZE)
             return
 
         if self.timer.active_beat == 0:
