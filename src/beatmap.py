@@ -2,34 +2,41 @@ import math
 import json
 
 class Beatmap:
-    def __init__(self, file):
+    def __init__(self, file=None):
         self.len = 0
         self.times = []
         self.angles = []
         self.angles_abs = []
         self.pos = []
-        mapjson = json.loads(open(file, "r").read())
-        mapbpm=float(mapjson["bpm"])
-        self.bpm = mapbpm
-        offset=float(mapjson["offset"])
-        self.offset = offset
-        beatTimes=[]
-        beatAngles=[]
-        for each in mapjson["beats"]:
-            beatFraction=each[0]
-            if len(beatFraction)==1:
-                time = offset+(60/mapbpm)*int(beatFraction[0])
-            else:
-                time = offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
-            angle = each[1]
-            self.add(time, angle, False)
+        
+        if file is not None:
+            mapjson = json.loads(open(file, "r").read())
+            mapbpm=float(mapjson["bpm"])
+            self.bpm = mapbpm
+            offset=float(mapjson["offset"])
+            self.offset = offset
+            beatTimes=[]
+            beatAngles=[]
+            for each in mapjson["beats"]:
+                beatFraction=each[0]
+                if len(beatFraction)==1:
+                    time = offset+(60/mapbpm)*int(beatFraction[0])
+                else:
+                    time = offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
+                angle = each[1]
+                self.add(time, angle, False)
+        else:
+            self.bpm = 120
+            self.offset = 0
 
+    def add(self, time, angle, abs, adjust=False):
+        if adjust:
+            secs_per_tick = 60 / self.bpm / 4
+            time = round(time / secs_per_tick) * secs_per_tick
 
-    def add(self, time, angle, abs):
         self.len += 1
 
         prev_abs_angle = self.angles_abs[-1] if self.angles_abs else 0
-
         dt = time - self.times[-1] if self.times else time
         dx = dt * math.cos(prev_abs_angle * math.pi / 180)
         dy = dt * math.sin(prev_abs_angle * math.pi / 180)

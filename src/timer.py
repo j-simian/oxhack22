@@ -1,4 +1,5 @@
 from collections import deque
+from const import EDITOR_MODE
 
 MAX_TOLERANCE = 0.40
 PERFECT_TOLERANCE_FRAC = 0.2
@@ -31,7 +32,7 @@ class Timer:
         if self.active_beat < self.beatmap.len:
             if self.global_timer >= self.beatmap.times[self.active_beat]:
                 self.active_beat += 1
-                if self.active_beat == self.beatmap.len:
+                if self.active_beat == self.beatmap.len and not EDITOR_MODE:
                     return True
         return False
 
@@ -43,9 +44,9 @@ class Timer:
         self.hit_this_beat = True
 
         delta = abs(self.delta())
-        if delta < PERFECT_TOLERANCE_FRAC:
+        if self.is_in_perfect_window():
             return 1000
-        elif delta < 1:
+        elif self.is_in_beat_window():
             return 1000 * (1 - delta)
         else:
             return -1000

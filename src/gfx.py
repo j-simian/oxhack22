@@ -2,6 +2,7 @@ import pygame
 import math
 from collections import deque
 from pygame.locals import *
+from const import EDITOR_MODE
 
 SCREEN_WIDTH = 1920/2
 SCREEN_HEIGHT = 1080/2
@@ -80,6 +81,8 @@ class Gfx:
     def drawCompass(self):
         centreX = 70
         centreY = 90
+        if EDITOR_MODE:
+            return
         offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
         for i in range(8):
             xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*40
