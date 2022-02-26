@@ -51,7 +51,7 @@ def main():
         pass
 
     timer = Timer([i for i in range(100) if i % 3 != 0])
-    beatmap = load_beatmap()
+    beatmap = load_beatmap()[0]
     timer = Timer(beatmap)
     gfx = Gfx(timer)
     music = Music()
