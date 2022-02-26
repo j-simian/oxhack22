@@ -17,7 +17,14 @@ COLOURS = [
         ]
 
 COMPASSCOLOURS = [
-        Color("#FFFFFF"), Color("#FFFF00"), Color("#00FF00"), Color("#00FFFF"), Color("#0000FF"), Color("#FF00FF"), Color("#FF0000"), Color("#FF8800")
+        Color("#FFFFFF"), #White
+        Color("#FF8800"), #orange
+        Color("#FF0000"), 
+        Color("#FF00FF"), 
+        Color("#0000FF"), 
+        Color("#00FFFF"), 
+        Color("#00FF00"), 
+        Color("#FFFF00") 
 ]
 
 
@@ -71,13 +78,14 @@ class Gfx:
         pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
     def drawCompass(self):
-        centreX = 120
-        centreY = 120
+        centreX = 70
+        centreY = 90
         offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
         for i in range(8):
-            xdif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*60
-            ydif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*60
-            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 20)
+            xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*40
+            ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*40
+            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 15)
+
     def update(self, delta):
         if self.health < 0:
             return True
