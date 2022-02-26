@@ -58,7 +58,8 @@ def update():
 def main():
     global running, timer, music, score, gfx, board
 
-    startJoystick()
+    joystick = startJoystick()
+    print(joystick)
 
     beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
