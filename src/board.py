@@ -13,6 +13,7 @@ class Board:
     player_pos = [START_TILE[0], START_TILE[1]]
     player_dist = 0
     player_last_tile = 0
+    player_angle = 0
 
     beats = [1] * 100
     squares = [[0, 0], [2, 1], [5, -1], [5, 0], [2, 1], [2, 1], [2, -1]]
@@ -40,9 +41,13 @@ class Board:
 
     def tick_player(self, delta):
         self.player_dist += delta * 0.01
-        self.player_pos[0] = self.squares[self.player_last_tile][0] + math.cos(sum(y for x,y in self.squares[0:self.player_last_tile])*math.pi/2) * self.player_dist * DIST
-        self.player_pos[1] = self.squares[self.player_last_tile][1] + math.sin(sum(y for x,y in self.squares[0:self.player_last_tile])*math.pi/2) * self.player_dist * DIST
+        self.player_angle = self.cumAngle(self.player_last_tile) * math.pi/2
+        self.player_pos[0] = self.squares[self.player_last_tile][0] # + math.cos(self.player_angle) * self.player_dist * DIST
+        self.player_pos[1] = self.squares[self.player_last_tile][1] # + math.sin(self.player_angle) * self.player_dist * DIST
         if self.player_dist > self.squares[self.player_last_tile][0]: 
             self.player_last_tile += 1
             self.player_dist = 0
 
+
+    def cumAngle(self, x):
+        return sum(y for x,y in self.squares[0:x]) * math.pi/2
