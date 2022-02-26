@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-
+import board
 
 SCREEN_WIDTH = 1920/2
 SCREEN_HEIGHT = 1080/2
@@ -34,7 +34,7 @@ class Gfx:
     def render(self):
         global COLOURS
         self.clearScreen() 
-        pygame.draw.rect(self.screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
+        board.render()
         
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
         img = myfont.render(f"score: {self.score}", 1, COLOURS[3])
