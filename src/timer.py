@@ -65,7 +65,7 @@ class Timer:
     def is_valid_hit(self, dir):
         return (self.is_in_beat_window() and not self.hit_this_beat
             and self.current_beat < self.beatmap.len 
-            and self.beatmap.angles[self.current_beat] == dir)
+            and self.beatmap.angles_abs[self.current_beat] == dir)
 
     # Returns offset from perfect beat in range [-1, 1]
     # If not currently in beat window, don't rely on this output.

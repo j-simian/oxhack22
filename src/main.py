@@ -36,7 +36,7 @@ def handleUI(events):
                     dir = ANGLE_MAP[event.button]
                 else:
                     dir = KEY_MAP[chr(event.key)]
-            except KeyError:
+            except (KeyError, ValueError):
                 print("Invalid key", event)
                 continue
             gfx.updateDelta()
