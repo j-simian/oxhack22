@@ -10,6 +10,10 @@ timer = None
 music = None
 score = 0
 
+def startJoystick():
+    pygame.joystick.init()
+    return pygame.joystick.Joystick(0)
+
 def handleUI(events):
     global running, timer, score
     for event in events:
@@ -27,6 +31,8 @@ def handleUI(events):
 
 def main():
     global running, timer, music, score
+
+    joystick = startJoystick()
 
     timer = Timer([i for i in range(100) if i % 3 != 0])
     gfx = Gfx(timer)
