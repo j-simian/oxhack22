@@ -1,4 +1,5 @@
 import pygame
+import math
 from collections import deque
 from pygame.locals import *
 
@@ -14,6 +15,11 @@ COLOURS = [
         Color("#8FBCBB"), Color("#88C0D0"), Color("#81A1C1"), Color("#5E81AC"), # BLUE COLOURS, INCREASING BRIGHTNESS
         Color("#BF616A"), Color("#D08770"), Color("#EBCB8B"), Color("#A3BE8C"), Color("#B48EAD") # RED, ORANGE, YELLOW, GREEN, PURPLE
         ]
+
+COMPASSCOLOURS = [
+    Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD"),
+    Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD"), Color("#B48EAD")
+]
 
 
 class Gfx:
@@ -64,6 +70,13 @@ class Gfx:
     def drawHealthBar(self):
         pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
+    def drawCompass(self):
+        centreX = 120
+        centreY = 120
+        for i in range(8):
+            xdif = math.sin(i*(math.pi/4))*60
+            ydif = math.cos(i*(math.pi/4))*60
+            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 20)
     def render(self,score, board, delta):
         if self.health<0:
             self.timer.active = False
@@ -72,6 +85,7 @@ class Gfx:
         if self.health>1:
             self.health = 1
         self.clearScreen() 
+        self.drawCompass()
         board.render(self.screen)
         
         self.drawErrorTimer()
