@@ -38,7 +38,7 @@ class Gfx:
         pygame.draw.rect(self.screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
         
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
-        img = myfont.render(f"score: {self.score}", 1, COLOURS[3])
+        img = myfont.render(f"score: {self.score*1000}", 1, COLOURS[3])
         self.screen.blit(img, (100, 100))
 
         self.swapBuffers()
