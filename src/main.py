@@ -1,5 +1,6 @@
 from timer import Timer
 from gfx import Gfx
+from gfxResults import GfxResults
 from music import Music
 from beatmap import Beatmap
 import time
@@ -10,6 +11,7 @@ HEALTH_LOSS = 0.1
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
 KEY_MAP = {'a': 180, 'q': 225, 'w': 270, 'e': 315, 'd': 0, 'x': 45, 's': 90, 'z': 135}
 gfx = None
+gfxResults = None
 board = None
 running = False
 timer = None
@@ -18,6 +20,9 @@ score = 0
 whichHits = [0,0,0] #perfects, non-perfect hits, misses
 pressedKey = None
 paused = False
+ended = False
+completed = False
+
 
 def startJoystick():
     pygame.joystick.init()
@@ -76,9 +81,10 @@ def update():
             whichHits[2]+=1
 
 def pause():
-    global paused, music
+    global paused, music, ended
     music.stop()
     paused = True
+    ended=True
 
 def unpause():
     global paused, music
@@ -86,13 +92,18 @@ def unpause():
     paused = False
 
 def main():
-    global running, timer, music, score, gfx, board, paused, started
+    global running, timer, music, score, gfx, gfxResults, board, paused, started, completed
 
     joystick = startJoystick()
 
     beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
+<<<<<<< Updated upstream
     gfx = Gfx(timer, beatmap)
+=======
+    gfx = Gfx(timer)
+    gfxResults = GfxResults(timer)
+>>>>>>> Stashed changes
     music = Music()
     board = Board(beatmap, timer)
 
@@ -104,20 +115,25 @@ def main():
 
     last_time = time.time()
     while running:
-        now = time.time()
-        delta = now - last_time
-        last_time = now
+        if not ended:
+            now = time.time()
+            delta = now - last_time
+            last_time = now
 
-        if not paused:
-            if timer.update(delta):
-                pause()
-            elif gfx.update(delta):
-                pause()
-            else:
-                update()
+            if not paused:
+                if timer.update(delta):
+                    pause()
+                    completed=True
+                elif gfx.update(delta):
+                    pause()
+                else:
+                    update()
 
-        gfx.render(score, board)
-        handleUI(pygame.event.get())
+            gfx.render(score, board)
+            handleUI(pygame.event.get())
+        else:
+            gfxResults.render(score, completed, board)
+            handleUI(pygame.event.get())
 
 if __name__ == "__main__":
     main()
