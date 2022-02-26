@@ -16,7 +16,7 @@ COLOURS = [
 class Gfx:
     def __init__(self, timer):
         self.timer = timer
-        self.existence = 1
+        self.existence = 2
         self.deltas = deque(([(0,self.timer.global_timer)]*5))
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -50,8 +50,8 @@ class Gfx:
         pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
         for i in range(5):
             timeDif = self.timer.global_timer - self.deltas[i][1]
-            if timeDif <= 1:
-                h = (1-timeDif)*50
+            if timeDif <= self.existence:
+                h = ((self.existence-timeDif)*50)/self.existence
             else:
                 h = 0
             pygame.draw.rect(self.screen, COLOURS[7], pygame.Rect(95*(self.deltas[i][0]+1),0,10,h))
