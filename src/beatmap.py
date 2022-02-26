@@ -20,9 +20,9 @@ class Beatmap:
             for each in mapjson["beats"]:
                 beatFraction=each[0]
                 if len(beatFraction)==1:
-                    time = offset+(60/mapbpm)*int(beatFraction[0])
+                    time = offset+(60/mapbpm)*float(beatFraction[0])
                 else:
-                    time = offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
+                    time = offset+(60/mapbpm)*(float(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
                 angle = each[1]
                 self.add(time, angle, False)
         else:
@@ -52,3 +52,10 @@ class Beatmap:
         else:
             self.angles.append(angle)
             self.angles_abs.append((prev_abs_angle + angle) % 360)
+
+    def to_json(self):
+        return json.dumps({
+                "bpm": self.bpm,
+                "offset": self.offset,
+                "beats": [ [[t], a] for t,a in zip(self.times, self.angles) ]
+            })

@@ -146,8 +146,7 @@ def main():
         handleUI(pygame.event.get())
 
     if EDITOR_MODE:
-        print(beatmap.times)
-        print(beatmap.angles)
+        print(beatmap.to_json())
 
 if __name__ == "__main__":
     main()

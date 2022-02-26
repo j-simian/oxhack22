@@ -1,1 +1,2 @@
-EDITOR_MODE = True
+EDITOR_MODE = False
+#EDITOR_MODE = True
