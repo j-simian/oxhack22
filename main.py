@@ -1,7 +1,7 @@
 import pygame 
 
-screen_width = 1920
-screen_height = 1080
+screen_width = 1920/2
+screen_height = 1080/2
 
 
 def initGfx():
