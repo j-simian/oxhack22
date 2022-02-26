@@ -71,6 +71,7 @@ def main():
     while paused:
         gfx.render(score, board, 0)
         handleUI(pygame.event.get())
+    score += 1000
 
     music.start_music()
     running = True
