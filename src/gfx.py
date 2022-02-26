@@ -66,8 +66,9 @@ class Gfx:
         
         self.drawErrorTimer()
 
-        myfont = pygame.font.SysFont("Comic Sans MS", 30)
-        img = myfont.render(f"score: {int(score)}", 1, COLOURS[3])
-        self.screen.blit(img, (100, 100))
+        myfont = pygame.font.SysFont("Comic Sans MS", 48)
+        width, height = myfont.size(str(int(score)))
+        img = myfont.render(str(int(score)), 1, COLOURS[2])
+        self.screen.blit(img, (SCREEN_WIDTH - width - 10, 10))
 
         self.swapBuffers()
