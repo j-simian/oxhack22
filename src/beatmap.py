@@ -7,8 +7,4 @@ mapbpm=float(maplines[0])
 offset=float(maplines[1])
 beatTimes=[]
 for eachline in maplines[2:]:
-    beatTimes.append(offset+float(eachline)*(60/mapbpm))
-
-print(mapbpm)
-print(60/mapbpm)
-print(beatTimes)
+    beatTimes.append(int(eachline))
