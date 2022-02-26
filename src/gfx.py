@@ -17,7 +17,7 @@ COLOURS = [
         ]
 
 COMPASSCOLOURS = [
-    Color("#009DDC"), Color("#009B72"), Color("#BDE4A7"), Color("#FFFD98"), Color("#6761A8"), Color("#F26430"), Color("#88C0D0"), Color("#81A1C1")
+        Color("#FFFFFF"), Color("#FFFF00"), Color("#00FF00"), Color("#00FFFF"), Color("#0000FF"), Color("#FF00FF"), Color("#FF0000"), Color("#FF8800")
 ]
 
 
