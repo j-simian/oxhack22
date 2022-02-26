@@ -1,12 +1,12 @@
 from timer import Timer
 from gfx import Gfx
+from music import Music
 import time
-import music
 import pygame 
 
 running = False
 timer = None
-
+music = None
 
 def handleUI(events):
     global running, timer
@@ -16,18 +16,18 @@ def handleUI(events):
             running = False
 
         elif event.type == pygame.KEYDOWN:
-            pygame.mixer.Sound("./res/hat.mp3").play()
+            music.play_hihat()
             if timer.is_in_beat_window():
                 print(f"On time {timer}")
             else:
                 print(f"Miss {timer}")
 
 def main():
-    global running, timer
+    global running, timer, music
 
     timer = Timer()
     gfx = Gfx(timer)
-    music.startMusic()
+    music = Music()
 
     running = True
     while running:
