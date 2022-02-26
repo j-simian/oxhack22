@@ -49,12 +49,16 @@ class Gfx:
     def drawErrorTimer(self):
         pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(ERROR_WIDTH,ERROR_HEIGHT,200,50))
         for i in range(5):
+            if abs(self.deltas[i][0])<=1:
+                lerpAmount = abs(self.deltas[i][0])
+            else:
+                lerpAmount = 0.5
             timeDif = self.timer.global_timer - self.deltas[i][1]
             if timeDif <= self.existence:
                 h = ((self.existence-timeDif)*50)/self.existence
             else:
                 h = 0
-            pygame.draw.rect(self.screen, COLOURS[7], pygame.Rect(ERROR_WIDTH+  95*(self.deltas[i][0]+1),ERROR_HEIGHT,10,h))        
+            pygame.draw.rect(self.screen, COLOURS[10].lerp(COLOURS[11],lerpAmount), pygame.Rect(ERROR_WIDTH+  95*(self.deltas[i][0]+1),ERROR_HEIGHT,10,h))        
 
     def render(self,score, board, delta):
         self.clearScreen() 
