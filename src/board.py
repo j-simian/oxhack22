@@ -39,7 +39,6 @@ class Board:
     def render(self, screen):
         poscur, dircur, timecur = self.squares[self.timer.active_beat]
         opakity = gfx.lerp(1,0,(max(0,min(1,-2*(timecur - self.timer.global_timer)))))
-        print(opakity)
         kolor = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dircur, 4)]
         kolor = kolor.lerp(gfx.COLOURS[0],opakity)
         pygame.draw.circle(screen, kolor, self._scale_position(poscur), SQUARE_SIZE)
