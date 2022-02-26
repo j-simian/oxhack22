@@ -2,6 +2,7 @@ from collections import deque
 
 MAX_TOLERANCE = 0.40
 PERFECT_TOLERANCE_FRAC = 0.2
+SMALL_TOLERANCE_FRAC = 0.6
 
 class Timer:
     def __init__(self, beatmap):
@@ -60,7 +61,7 @@ class Timer:
     def _current_beat_tolerance_oneway(self):
         # FIXME Consider distance to previous note as well, not just the next one.
         if self.current_beat + 1 < self.beatmap.len:
-            return min(MAX_TOLERANCE / 2, (self.beatmap.times[self.current_beat+1] - self.beatmap.times[self.current_beat]) / 2)
+            return min(MAX_TOLERANCE / 2, (self.beatmap.times[self.current_beat+1] - self.beatmap.times[self.current_beat]) / 2 * SMALL_TOLERANCE_FRAC)
         else:
             return MAX_TOLERANCE / 2
 

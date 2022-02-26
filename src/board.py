@@ -15,7 +15,6 @@ class Board:
         self.update = False
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
-        self.time = 0
         self.squares = [((0, 0), 0, 0)]
         x, y = (0, 0)
         d = (1, 0)
@@ -37,14 +36,13 @@ class Board:
         return (START_TILE[0] + x * SCALE + self.cameraOffsetX*SCALE, START_TILE[1] + y * SCALE+self.cameraOffsetY*SCALE)
 
     def render(self, screen, delta):
-        self.time += delta
         for pos, dir, _ in reversed(self.squares[self.timer.active_beat:]):
             color = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dir, 4)]
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
 
     def render_player(self, screen):
-        if self.timer.active_beat < len(self.squares) and self.time > self.squares[self.timer.active_beat][2]:
+        if self.timer.active_beat < len(self.squares) and self.timer.global_timer > self.squares[self.timer.active_beat][2]:
             self.timer.active_beat += 1
             self.update = True
         if self.timer.active_beat == len(self.squares):
@@ -53,8 +51,8 @@ class Board:
 
         tp, _, tt = self.squares[self.timer.active_beat-1]
         np, _, nt = self.squares[self.timer.active_beat]
-        x = tp[0] + (self.time - tt) / (nt - tt) * (np[0] - tp[0])
-        y = tp[1] + (self.time - tt) / (nt - tt) * (np[1] - tp[1])
+        x = tp[0] + (self.timer.global_timer - tt) / (nt - tt) * (np[0] - tp[0])
+        y = tp[1] + (self.timer.global_timer - tt) / (nt - tt) * (np[1] - tp[1])
         pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE)
         if self.mode == 0:
             self.cameraOffsetX = -x
