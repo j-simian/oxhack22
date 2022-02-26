@@ -43,9 +43,9 @@ class Gfx:
 
         self.swapBuffers()
 
-    def render(self,score, board):
+    def render(self,score, board, delta):
         self.clearScreen() 
-        board.render(self.screen)
+        board.render(self.screen, delta)
         
         pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
         for i in range(5):

@@ -29,12 +29,11 @@ def handleUI(events):
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
             gfx.updateDelta()
             music.play_hihat()
-            if timer.is_in_beat_window():
+            if timer.is_valid_hit():
                 print(f"On time {timer.delta()}")
             else:
                 print(f"Miss {timer.delta()}")
-            timer.register_hit()
-            score += timer.calculate_score()
+            score += timer.register_hit()
 
 def update():
     global timer, score
@@ -51,7 +50,7 @@ def main():
         pass
 
     timer = Timer([i for i in range(100) if i % 3 != 0])
-    beatmap = load_beatmap()
+    beatmap = load_beatmap()[0]
     timer = Timer(beatmap)
     gfx = Gfx(timer)
     music = Music()
@@ -65,10 +64,10 @@ def main():
         delta = now - last_time
         last_time = now
 
-        timer.update(delta)
-        update()
         handleUI(pygame.event.get())
-        gfx.render(score, board)
+        timer.update(delta)
+        gfx.render(score, board, delta)
+        update()
 
 if __name__ == "__main__":
     main()
