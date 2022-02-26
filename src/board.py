@@ -2,63 +2,55 @@ import pygame
 import gfx
 import math
 
-DIST = 30
 SQUARE_SIZE = 10
-CIRCLE_SIZE = 15 
-SQUARE_OFFSET = 5
-
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
+SCALE = 50
 
 class Board:
-    player_pos = [START_TILE[0], START_TILE[1]]
-    player_dist = 0
-    player_last_tile = -1
-    player_angle = 0
-
     def __init__(self, beatmap):
-        self.squares = [(beatmap.times[0], beatmap.angles[0])]
-        for i in range(1, beatmap.len):
-            self.squares.append((3 * (beatmap.times[i] - beatmap.times[i-1]), beatmap.angles[i]))
+        self.cur_square = 0
+        self.time = 0
+        self.squares = [((0, 0), 0, 0)]
+        x, y = (0, 0)
+        d = (1, 0)
+        for i in range(beatmap.len):
+            time, angle = beatmap.times[i], beatmap.angles[i]
+            if i == 0:
+                x = d[0] * time
+                y = d[1] * time
+            else:
+                x += d[0] * (time - beatmap.times[i-1])
+                y += d[1] * (time - beatmap.times[i-1])
 
-    def render_player(self, screen):
-        pygame.draw.circle(screen, gfx.COLOURS[13], (self.player_pos[0], self.player_pos[1]), CIRCLE_SIZE)
+            if angle == 90:
+                d = (d[1], -d[0])
+            elif angle == -90:
+                d = (-d[1], d[0])
+            else:
+                print("invalid angle {beatmap.angles[i]}")
+                exit(1)
+            self.squares.append(((x, y), angle, time))
 
     def render(self, screen, delta):
-        x = START_TILE[0]
-        y = START_TILE[1]
-        for index, i in enumerate(self.squares):
-            currColour = gfx.COLOURS[4] 
-            x = self.cumPos(index)[0]
-            y = self.cumPos(index)[1]
-            if i[1] == 90:
+        self.time += delta
+        for pos, dir, _ in self.squares:
+            currColour = gfx.COLOURS[4]
+            if dir == 90:
                 currColour = gfx.COLOURS[11]
-            elif i[1] == -90:
+            elif dir == -90:
                 currColour = gfx.COLOURS[7]
-            pygame.draw.circle(screen, currColour, (x, y), SQUARE_SIZE)
-        self.tick_player(delta)
+            pygame.draw.circle(screen, currColour, (START_TILE[0] + pos[0] * SCALE, START_TILE[1] + pos[1] * SCALE), SQUARE_SIZE)
         self.render_player(screen)
 
-    def tick_player(self, delta):
-        self.player_dist += delta * 3
-        self.player_angle = self.cumAngle(self.player_last_tile) 
-        self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle * math.pi / 180.0) * self.player_dist * DIST
-        self.player_pos[1] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle * math.pi / 180.0) * self.player_dist * DIST
-        if self.player_dist > self.squares[self.player_last_tile][0]: 
-            if self.player_last_tile < len(self.squares) - 1:
-                self.player_last_tile += 1
-            self.player_dist = 0
+    def render_player(self, screen):
+        if self.cur_square < len(self.squares) and self.time > self.squares[self.cur_square][2]:
+            self.cur_square += 1
+        if self.cur_square == len(self.squares):
+            pygame.draw.circle(screen, gfx.COLOURS[9], self.squares[-1][0], SQUARE_SIZE*2)
+            return
 
-
-    def cumAngle(self, x):
-        angle = sum(y for x,y in self.squares[0:x])  
-        return angle
-
-    def cumPos(self, n):
-        x = START_TILE[0]
-        y = START_TILE[1]
-        for k in range(0, n):
-            i = self.squares[k]
-            angle = self.cumAngle(k)
-            x += math.cos(angle * math.pi / 180.0) * i[0] * (DIST)
-            y += math.sin(angle * math.pi / 180.0) * i[0] * (DIST)
-        return (x, y)
+        tp, _, tt = self.squares[self.cur_square-1]
+        np, _, nt = self.squares[self.cur_square]
+        x = tp[0] + (self.time - tt) / (nt - tt) * (np[0] - tp[0])
+        y = tp[1] + (self.time - tt) / (nt - tt) * (np[1] - tp[1])
+        pygame.draw.circle(screen, gfx.COLOURS[9], (START_TILE[0] + x * SCALE, START_TILE[1] + y * SCALE), SQUARE_SIZE*2)
