@@ -14,4 +14,4 @@ def load_beatmap():
         else:
             beatTimes.append(offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2])))
         beatAngles.append(each[1])
-    return(beatTimes,beatAngles)
+    return(beatTimes,beatAngles,mapbpm,offset)
