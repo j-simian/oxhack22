@@ -64,13 +64,13 @@ class Gfx:
     def drawHealthBar(self):
         pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
-    def render(self,score, board, delta):
-        if self.health<0:
+    def update(self, delta):
+        if self.health < 0:
             self.timer.active = False
-        if self.timer.active:
-            self.health+=0.0001*delta*600
-        if self.health>1:
-            self.health = 1
+        else:
+            self.health = min(1, self.health + 0.06*delta)
+
+    def render(self, score, board):
         self.clearScreen() 
         board.render(self.screen)
         
