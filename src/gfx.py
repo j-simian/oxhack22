@@ -10,14 +10,14 @@ ERROR_WIDTH = SCREEN_WIDTH/2 - 100
 ERROR_HEIGHT = SCREEN_HEIGHT - 100
 
 COLOURS = [
-        Color("#2E3440"), Color("#3B4252"), Color("#434C5E"), Color("#4C566A"), # DARK GREY COLOURS, INCREASING BRIGHTNESS
+        Color("#2A2D34"), Color("#3B4252"), Color("#434C5E"), Color("#4C566A"), # DARK GREY COLOURS, INCREASING BRIGHTNESS
         Color("#D8DEE9"), Color("#E5E9F0"), Color("#ECEFF4"), # WHITE COLOURS, INCREASING BRIGHTNESS
         Color("#8FBCBB"), Color("#88C0D0"), Color("#81A1C1"), Color("#5E81AC"), # BLUE COLOURS, INCREASING BRIGHTNESS
         Color("#BF616A"), Color("#D08770"), Color("#EBCB8B"), Color("#A3BE8C"), Color("#B48EAD") # RED, ORANGE, YELLOW, GREEN, PURPLE
         ]
 
 COMPASSCOLOURS = [
-    Color("#BF616A"), Color("#D08770"), Color("#EBCB8B"), Color("#A3BE8C"), Color("#B48EAD"), Color("#8FBCBB"), Color("#88C0D0"), Color("#81A1C1")
+    Color("#009DDC"), Color("#009B72"), Color("#BDE4A7"), Color("#FFFD98"), Color("#6761A8"), Color("#F26430"), Color("#88C0D0"), Color("#81A1C1")
 ]
 
 
@@ -76,7 +76,7 @@ class Gfx:
     def drawCompass(self):
         centreX = 120
         centreY = 120
-        offset = self.lerp(self.beatmap.angles_abs[self.timer.active_beat], self.beatmap.angles_abs[self.timer.current_beat], max(self.timer.delta(), 0))
+        offset = self.lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
         for i in range(8):
             xdif = math.sin((i*(math.pi/4))+offset)*60
             ydif = math.cos((i*(math.pi/4))+offset)*60
