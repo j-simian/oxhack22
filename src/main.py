@@ -32,7 +32,9 @@ def handleUI(events):
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
-            paused=False
+            if paused:
+                paused = False
+                continue
             try:
                 if event.type == pygame.JOYBUTTONDOWN:
                     dir = ANGLE_MAP[event.button]
@@ -71,7 +73,6 @@ def main():
     while paused:
         gfx.render(score, board, 0)
         handleUI(pygame.event.get())
-    score += 1000
 
     music.start_music()
     running = True

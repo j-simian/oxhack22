@@ -72,7 +72,7 @@ class Gfx:
         if self.health>1:
             self.health = 1
         self.clearScreen() 
-        board.render(self.screen, delta)
+        board.render(self.screen)
         
         self.drawErrorTimer()
         self.drawHealthBar()
