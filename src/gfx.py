@@ -68,7 +68,7 @@ class Gfx:
 
         myfont = pygame.font.SysFont("Comic Sans MS", 48)
         width, height = myfont.size(str(int(score)))
-        img = myfont.render(str(int(score)), 1, COLOURS[2])
+        img = myfont.render(str(int(score)), 1, COLOURS[6])
         self.screen.blit(img, (SCREEN_WIDTH - width - 10, 10))
 
         self.swapBuffers()
