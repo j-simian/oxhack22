@@ -6,7 +6,7 @@ import time
 import pygame 
 from board import Board
 
-
+HEALTH_LOSS = 0.1
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
 danceMode = False
 gfx = None
@@ -39,13 +39,15 @@ def handleUI(events):
             if timer.is_valid_hit():
                 print(f"On time {timer.delta()}")
             else:
+                gfx.health -= HEALTH_LOSS
                 print(f"Miss {timer.delta()}")
             score += timer.register_hit()
 
 def update():
-    global timer, score
+    global timer, score, gfx
     if timer.was_last_missed_oneshot():
         print("Skipped")
+        gfx.health -= HEALTH_LOSEE
         score -= 1000
 
 def main():
@@ -70,7 +72,6 @@ def main():
         now = time.time()
         delta = now - last_time
         last_time = now
-
         timer.update(delta)
         update()
         gfx.render(score, board, delta)

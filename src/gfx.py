@@ -18,6 +18,7 @@ COLOURS = [
 
 class Gfx:
     def __init__(self, timer):
+        self.health = 1
         self.timer = timer
         self.existence = 2
         self.deltas = deque(([(-10,self.timer.global_timer)]*5))
@@ -59,12 +60,16 @@ class Gfx:
             else:
                 h = 0
             pygame.draw.rect(self.screen, COLOURS[10].lerp(COLOURS[11],lerpAmount), pygame.Rect(ERROR_WIDTH+  95*(self.deltas[i][0]+1),ERROR_HEIGHT,10,h))        
+        
+    def drawHealthBar(self):
+        pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
     def render(self,score, board, delta):
         self.clearScreen() 
         board.render(self.screen, delta)
         
         self.drawErrorTimer()
+        self.drawHealthBar()
 
         myfont = pygame.font.SysFont("Comic Sans MS", 48)
         width, height = myfont.size(str(int(score)))

@@ -11,7 +11,7 @@ LOOKAHEAD_COUNT = 7
 
 class Board:
     def __init__(self, beatmap):
-        self.mode = 1
+        self.mode = 0
         self.update = False
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
