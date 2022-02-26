@@ -47,7 +47,7 @@ def update():
     global timer, score, gfx
     if timer.was_last_missed_oneshot():
         print("Skipped")
-        gfx.health -= HEALTH_LOSEE
+        gfx.health -= HEALTH_LOSS
         score -= 1000
 
 def main():

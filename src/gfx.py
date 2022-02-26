@@ -65,6 +65,9 @@ class Gfx:
         pygame.draw.rect(self.screen, COLOURS[11], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
     def render(self,score, board, delta):
+        self.health+=0.0001
+        if self.health>1:
+            self.health = 1
         self.clearScreen() 
         board.render(self.screen, delta)
         
