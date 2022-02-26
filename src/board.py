@@ -6,6 +6,7 @@ SQUARE_SIZE = 10
 PLAYER_SIZE = 15
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
 SCALE = 50
+LOOKAHEAD_COUNT = 7
 
 
 class Board:
@@ -36,7 +37,7 @@ class Board:
 
     def render(self, screen, delta):
         self.time += delta
-        for pos, dir, _ in reversed(self.squares):
+        for pos, dir, _ in reversed(self.squares[self.cur_square:self.cur_square+LOOKAHEAD_COUNT]):
             color = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dir, 4)]
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
