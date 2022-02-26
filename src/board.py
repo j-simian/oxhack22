@@ -15,9 +15,10 @@ class Board:
     player_angle = 0
 
     def __init__(self, beatmap):
-        self.squares = [(0, 0)]
+        self.squares = [(beatmap.times[0], beatmap.angles[0])]
         for i in range(beatmap.len):
-            self.squares.append((beatmap.times[i], beatmap.angles[i] / 90))
+            self.squares.append((3 * (beatmap.times[i] - beatmap.times[i-1]), beatmap.angles[i] / 90))
+        print(self.squares)
 
     def render_player(self, screen):
         pygame.draw.circle(screen, gfx.COLOURS[9], (self.player_pos[0], self.player_pos[1]), SQUARE_SIZE*2)

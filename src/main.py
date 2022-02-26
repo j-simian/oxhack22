@@ -63,10 +63,10 @@ def main():
         delta = now - last_time
         last_time = now
 
-        handleUI(pygame.event.get())
         timer.update(delta)
-        gfx.render(score, board, delta)
         update()
+        gfx.render(score, board, delta)
+        handleUI(pygame.event.get())
 
 if __name__ == "__main__":
     main()
