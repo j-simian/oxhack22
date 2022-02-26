@@ -3,6 +3,7 @@ import gfx
 import math
 
 SQUARE_SIZE = 10
+PLAYER_SIZE = 15
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
 SCALE = 50
 
@@ -31,6 +32,10 @@ class Board:
                 exit(1)
             self.squares.append(((x, y), angle, time))
 
+    def _scale_position(self, p):
+        x, y = p
+        return (START_TILE[0] + x * SCALE, START_TILE[1] + y * SCALE)
+
     def render(self, screen, delta):
         self.time += delta
         for pos, dir, _ in self.squares:
@@ -39,18 +44,18 @@ class Board:
                 currColour = gfx.COLOURS[11]
             elif dir == -90:
                 currColour = gfx.COLOURS[7]
-            pygame.draw.circle(screen, currColour, (START_TILE[0] + pos[0] * SCALE, START_TILE[1] + pos[1] * SCALE), SQUARE_SIZE)
+            pygame.draw.circle(screen, currColour, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
 
     def render_player(self, screen):
         if self.cur_square < len(self.squares) and self.time > self.squares[self.cur_square][2]:
             self.cur_square += 1
         if self.cur_square == len(self.squares):
-            pygame.draw.circle(screen, gfx.COLOURS[9], self.squares[-1][0], SQUARE_SIZE*2)
+            pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.squares[-1][0]), PLAYER_SIZE)
             return
 
         tp, _, tt = self.squares[self.cur_square-1]
         np, _, nt = self.squares[self.cur_square]
         x = tp[0] + (self.time - tt) / (nt - tt) * (np[0] - tp[0])
         y = tp[1] + (self.time - tt) / (nt - tt) * (np[1] - tp[1])
-        pygame.draw.circle(screen, gfx.COLOURS[9], (START_TILE[0] + x * SCALE, START_TILE[1] + y * SCALE), SQUARE_SIZE*2)
+        pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), SQUARE_SIZE*2)
