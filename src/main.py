@@ -98,12 +98,8 @@ def main():
 
     beatmap = Beatmap("res/map.json")
     timer = Timer(beatmap)
-<<<<<<< Updated upstream
     gfx = Gfx(timer, beatmap)
-=======
-    gfx = Gfx(timer)
     gfxResults = GfxResults(timer)
->>>>>>> Stashed changes
     music = Music()
     board = Board(beatmap, timer)
 
