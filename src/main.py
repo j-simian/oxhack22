@@ -25,7 +25,7 @@ def handleUI(events):
             pygame.quit()
             running = False
 
-        elif event.type == pygame.KEYDOWN:
+        elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
             music.play_hihat()
             if timer.is_in_beat_window():
                 print(f"On time {timer.delta()}")
