@@ -38,7 +38,7 @@ class Board:
         self.render_player(screen)
 
     def render_player(self, screen):
-        if self.timer.active_beat == self.beatmap.len:
+        if self.timer.active_beat == self.beatmap.len))) if self.timer.is_in_perfect_window() else PLAYER_SIZE):
             pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.beatmap.pos[-1]), PLAYER_SIZE)
             return
 
