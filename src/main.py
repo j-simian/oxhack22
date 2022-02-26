@@ -102,7 +102,7 @@ def main():
 
     joystick = startJoystick()
 
-    beatmap = Beatmap("res/map.json")
+    beatmap = Beatmap("res/map2.json")
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
