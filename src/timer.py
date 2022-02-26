@@ -10,7 +10,6 @@ class Timer:
 
         self.last_time = time.time()
         self.global_timer = 0
-        self.in_beat_window = False
 
     def update(self):
         now = time.time()
@@ -24,25 +23,29 @@ class Timer:
         if len(self.beatmap) == 0:
             return
 
-        next_beat_time = self.beatmap[0]
-        if just_crossed_time(prev_timer, self.global_timer, next_beat_time - MAX_TOLERANCE / 2):
-            self.in_beat_window = True
-        if just_crossed_time(prev_timer, self.global_timer, next_beat_time):
+        beat_time = self.beatmap[0]
+        beat_tol = self._current_beat_tolerance_oneway()
+        if just_crossed_time(prev_timer, self.global_timer, beat_time):
             print("BEAT")
-        if just_crossed_time(prev_timer, self.global_timer, next_beat_time + MAX_TOLERANCE / 2):
-            self.in_beat_window = False
-
-        if self.global_timer >= next_beat_time + MAX_TOLERANCE / 2:
+        if self.global_timer >= beat_time + beat_tol:
             self.beatmap.popleft()
+    
+    def _current_beat_tolerance_oneway(self):
+        # FIXME Consider distance to previous note as well, not just the next one.
+        if len(self.beatmap) >= 2:
+            return min(MAX_TOLERANCE / 2, (self.beatmap[1] - self.beatmap[0]) / 2)
+        else:
+            return MAX_TOLERANCE / 2
 
     def is_in_beat_window(self):
-        return self.in_beat_window
+        return abs(self.delta()) < 1
 
     # Returns offset from perfect beat in range [-1, 1]
     # If not currently in beat window, don't rely on this output.
     def delta(self):
         if len(self.beatmap) > 0:
-            return (self.global_timer - self.beatmap[0]) / (MAX_TOLERANCE / 2)
+            tol = self._current_beat_tolerance_oneway()
+            return (self.global_timer - self.beatmap[0]) / tol
         else:
             return -100
 
