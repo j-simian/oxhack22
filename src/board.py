@@ -7,8 +7,8 @@ PLAYER_SIZE = 15
 START_TILE = [gfx.SCREEN_WIDTH/2, gfx.SCREEN_HEIGHT/2] 
 SCALE = 50
 
-CAMERA_OFFSET_X = 100
-CAMERA_OFFSET_Y = 100
+CAMERA_OFFSET_X = 0
+CAMERA_OFFSET_Y = -100
 
 class Board:
     def __init__(self, beatmap):
