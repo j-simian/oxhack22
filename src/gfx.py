@@ -78,8 +78,8 @@ class Gfx:
         centreY = 120
         offset = self.lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
         for i in range(8):
-            xdif = math.sin((i*(math.pi/4))+offset)*60
-            ydif = math.cos((i*(math.pi/4))+offset)*60
+            xdif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*60
+            ydif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*60
             pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 20)
     def update(self, delta):
         if self.health < 0:
