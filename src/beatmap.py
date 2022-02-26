@@ -3,10 +3,12 @@ maplines = []
 for eachline in mapfile:
     maplines.append(str(eachline))
 
-bpm=eachline[0]
-offset=eachline[1]
+mapbpm=float(maplines[0])
+offset=float(maplines[1])
 beatTimes=[]
 for eachline in maplines[2:]:
-    beatTimes.append(float(eachline))
+    beatTimes.append(offset+float(eachline)*(60/mapbpm))
 
+print(mapbpm)
+print(60/mapbpm)
 print(beatTimes)
