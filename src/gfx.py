@@ -5,8 +5,8 @@ SCREEN_WIDTH = 1920/2
 SCREEN_HEIGHT = 1080/2
 
 COLOURS = [
-        ("#2E3440"), ("#3B4252"), ("#434C5E"), ("#4C566A"),
-        ("#D8DEE9"), ("#E5E9F0"), ("#ECEFF4"),
+        Color("#2E3440"), ("#3B4252"), ("#434C5E"), ("#4C566A"),
+        Color("#D8DEE9"), ("#E5E9F0"), ("#ECEFF4"),
         ("#8FBCBB"), ("#88C0D0"), ("#81A1C1"), ("#5E81AC"),
         ("#BF616A"), ("#D08770"), ("#EBCB8B"), ("#A3BE8C"), ("#B48EAD")
         ]
@@ -22,7 +22,8 @@ class Gfx:
     
     def clearScreen(self):
         if self.timer.is_in_beat_window():
-            self.screen.fill(COLOURS[4])
+            delta = self.timer.delta()
+            self.screen.fill(COLOURS[4].lerp(COLOURS[0], delta))
         else:
             self.screen.fill(COLOURS[0])
 
