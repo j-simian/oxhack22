@@ -37,6 +37,12 @@ class Board:
         return (START_TILE[0] + x * SCALE + self.cameraOffsetX*SCALE, START_TILE[1] + y * SCALE+self.cameraOffsetY*SCALE)
 
     def render(self, screen):
+        poscur, dircur, timecur = self.squares[self.timer.active_beat]
+        opakity = gfx.lerp(1,0,(max(0,min(1,-2*(timecur - self.timer.global_timer)))))
+        print(opakity)
+        kolor = gfx.COLOURS[{0: 6, 90: 11, -90: 7, 45: 12, -45: 13}.get(dircur, 4)]
+        kolor = kolor.lerp(gfx.COLOURS[0],opakity)
+        pygame.draw.circle(screen, kolor, self._scale_position(poscur), SQUARE_SIZE)
         for pos, dir, time in reversed(self.squares[self.timer.active_beat+1:]):
             color = gfx.COMPASSCOLOURS[(dir//45)]
             opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))

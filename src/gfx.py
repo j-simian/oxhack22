@@ -42,11 +42,11 @@ class Gfx:
         self.swapBuffers()
     
     def clearScreen(self):
-        if self.timer.is_in_beat_window():
-            delta = self.timer.delta()
-            self.screen.fill(COLOURS[0].lerp(COLOURS[4], 1-abs(delta)))
-        else:
-            self.screen.fill(COLOURS[0])
+        # if self.timer.is_in_beat_window():
+        #     delta = self.timer.delta()
+        #     self.screen.fill(COLOURS[0].lerp(COLOURS[4], 1-abs(delta)))
+        # else:
+        self.screen.fill(COLOURS[0])
 
     def swapBuffers(self):
         pygame.display.flip()
