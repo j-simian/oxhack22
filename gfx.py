@@ -31,5 +31,6 @@ def swapBuffers():
 
 def render():
     global screen
-    pygame.draw.rect(screen, colours[11], pygame.Rect(50, 50, 100, 100))
+    global colours
     clearScreen() 
+    pygame.draw.rect(screen, colours[11], pygame.Rect(0.5, 0.5, 1, 1))

@@ -55,8 +55,8 @@ def main():
     last_time = time.time()
     pygame.time.set_timer(MILLIS_EVT, 1)
     while running:
-        gfx.render()
         handleUI(pygame.event.get())
+        gfx.render()
     print("Done")
 
 if __name__ == "__main__":
