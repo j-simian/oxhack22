@@ -1,7 +1,7 @@
 import time
 
-bpm = 128
-time_per_beat = 60 / bpm
+BPM = 128
+TIME_PER_BEAT = 60 / BPM
 CORRECT_HIT_TOLERANCE = 0.03
 
 class Timer:
@@ -18,17 +18,17 @@ class Timer:
 
         def just_crossed_time(prev, cur, time):
             return prev < time and cur >= time
-        if just_crossed_time(prev_timer, self.global_timer, time_per_beat / 2 - CORRECT_HIT_TOLERANCE):
+        if just_crossed_time(prev_timer, self.global_timer, TIME_PER_BEAT / 2 - CORRECT_HIT_TOLERANCE):
             self.in_beat_window = True
             print("Beat start")
-        if just_crossed_time(prev_timer, self.global_timer, time_per_beat / 2):
+        if just_crossed_time(prev_timer, self.global_timer, TIME_PER_BEAT / 2):
             print("BEAT")
-        if just_crossed_time(prev_timer, self.global_timer, time_per_beat / 2 + CORRECT_HIT_TOLERANCE):
+        if just_crossed_time(prev_timer, self.global_timer, TIME_PER_BEAT / 2 + CORRECT_HIT_TOLERANCE):
             self.in_beat_window = False
             print("Beat end")
 
-        if self.global_timer >= time_per_beat:
-            self.global_timer -= time_per_beat
+        if self.global_timer >= TIME_PER_BEAT:
+            self.global_timer -= TIME_PER_BEAT
 
     def is_in_beat_window(self):
         return self.in_beat_window
