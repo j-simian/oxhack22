@@ -25,12 +25,18 @@ class Beatmap:
                     time = offset+(60/mapbpm)*(int(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
                 angle = each[1]
                 self.add(time, angle, False)
+        else:
+            self.bpm = 120
+            self.offset = 0
 
-    def add(self, time, angle, abs):
+    def add(self, time, angle, abs, adjust=False):
+        if adjust:
+            secs_per_tick = 60 / self.bpm / 4
+            time = round(time / secs_per_tick) * secs_per_tick
+
         self.len += 1
 
         prev_abs_angle = self.angles_abs[-1] if self.angles_abs else 0
-
         dt = time - self.times[-1] if self.times else time
         dx = dt * math.cos(prev_abs_angle * math.pi / 180)
         dy = dt * math.sin(prev_abs_angle * math.pi / 180)

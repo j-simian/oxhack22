@@ -74,7 +74,7 @@ def update():
         dir = pressedKey
         pressedKey = None
         if EDITOR_MODE:
-            beatmap.add(timer.global_timer, dir, True)
+            beatmap.add(timer.global_timer, dir, True, True)
         else:
             gfx.updateDelta(dir)
             music.play_hihat()

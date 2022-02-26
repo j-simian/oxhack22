@@ -43,6 +43,7 @@ class Timer:
             return -1000
         self.hit_this_beat = True
 
+        delta = abs(self.delta())
         if self.is_in_perfect_window():
             return 1000
         elif self.is_in_beat_window():
