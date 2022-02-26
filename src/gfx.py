@@ -1,4 +1,5 @@
 import pygame
+from collections import deque
 from pygame.locals import *
 
 SCREEN_WIDTH = 1920/2
@@ -15,7 +16,8 @@ COLOURS = [
 class Gfx:
     def __init__(self, timer):
         self.timer = timer
-        self.delta = 0
+        self.existence = 1
+        self.deltas = deque(([(0,self.timer.global_timer)]*5))
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Hackathon rhythm game")
@@ -33,10 +35,11 @@ class Gfx:
         pygame.display.flip()
 
     def updateDelta(self):
+        self.deltas.popleft()
         if self.timer.is_in_beat_window():
-            self.delta = self.timer.delta()
+            self.deltas.append((self.timer.delta(), self.timer.global_timer))
         else:
-            self.delta = -2
+            self.deltas.append((-2, self.timer.global_timer))
 
         self.swapBuffers()
 
@@ -45,7 +48,13 @@ class Gfx:
         board.render(self.screen, delta)
         
         pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
-        pygame.draw.rect(self.screen, COLOURS[7], pygame.Rect(90*(self.delta+1),0,20,50))
+        for i in range(5):
+            timeDif = self.timer.global_timer - self.deltas[i][1]
+            if timeDif <= 1:
+                h = (1-timeDif)*50
+            else:
+                h = 0
+            pygame.draw.rect(self.screen, COLOURS[7], pygame.Rect(95*(self.deltas[i][0]+1),0,10,h))
 
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
         img = myfont.render(f"score: {int(score)}", 1, COLOURS[3])
