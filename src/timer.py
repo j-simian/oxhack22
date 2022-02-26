@@ -5,6 +5,7 @@ PERFECT_TOLERANCE_FRAC = 0.2
 
 class Timer:
     def __init__(self, beatmap):
+        self.finished = False
         self.beatmap = beatmap
         self.current_beat = 0
         self.hit_this_beat = False
@@ -73,4 +74,5 @@ class Timer:
             tol = self._current_beat_tolerance_oneway()
             return (self.global_timer - self.beatmap.times[self.current_beat]) / tol
         else:
+            self.finished = True
             return -100
