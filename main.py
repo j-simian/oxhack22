@@ -20,20 +20,20 @@ def handleUI(events):
         elif event.type == pygame.KEYDOWN:
             music.play_hihat()
             if timer.is_in_beat_window():
-                score+=1
-                print(f"On time {timer}")
+                print(f"On time {timer.delta()}")
             else:
-                score-=1
-                print(f"Miss {timer}")
+                print(f"Miss {timer.delta()}")
+            score += timer.calculate_score()
 
 def main():
     global running, timer, music, score
 
     timer = Timer()
-    gfx = Gfx(timer,score)
+    gfx = Gfx(timer)
     music = Music()
     board = Board()
 
+    music.start_music()
     running = True
     while running:
         timer.update()
