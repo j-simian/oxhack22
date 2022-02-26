@@ -1,6 +1,7 @@
 import pygame 
 import gfx
 import time
+import music
 
 bpm = 128
 time_per_beat = 60 / bpm
@@ -48,18 +49,11 @@ def handleUI(events):
             if global_timer >= time_per_beat:
                 global_timer -= time_per_beat
 
-def startMusic():
-    pygame.mixer.init()
-    pygame.mixer.music.load("./res/song.mp3")
-    pygame.mixer.music.play(loops=-1)
-    # pygame.mixer.music.set_volume(0.7)
-    pygame.mixer.music.play()
-
 def main():
     global running, last_time
     print("Hello world")
     gfx.initGfx()
-    startMusic()
+    music.startMusic()
     running = True
     last_time = time.time()
     pygame.time.set_timer(MILLIS_EVT, 1)
