@@ -31,6 +31,10 @@ class Gfx:
     def swapBuffers(self):
         pygame.display.flip()
 
+    def renderTimer(self):
+        pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
+
+
     def render(self,score, board):
         self.clearScreen() 
         board.render(self.screen)
@@ -38,5 +42,7 @@ class Gfx:
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
         img = myfont.render(f"score: {int(score)}", 1, COLOURS[3])
         self.screen.blit(img, (100, 100))
+
+        self.renderTimer()
 
         self.swapBuffers()
