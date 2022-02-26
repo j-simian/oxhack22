@@ -1,4 +1,5 @@
 import pygame
+import main
 
 screen_width = 1920/2
 screen_height = 1080/2
@@ -19,12 +20,16 @@ def initGfx():
     swapBuffers()
     
 def clearScreen():
-    screen.fill(colours[0])
+    if main.global_timer <= 0.1:
+        screen.fill(colours[4])
+    else:
+        screen.fill(colours[0])
 
 def swapBuffers():
     pygame.display.flip()
 
 
-
 def render():
+    global screen
+    pygame.draw.rect(screen, colours[11], pygame.Rect(50, 50, 100, 100))
     clearScreen() 
