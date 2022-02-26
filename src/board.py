@@ -26,24 +26,21 @@ class Board:
     def render(self, screen, delta):
         x = START_TILE[0]
         y = START_TILE[1]
-        angle = 0
-        for i in self.squares:
+        for index, i in enumerate(self.squares):
             currColour = gfx.COLOURS[4] 
-            if i[1] == 1:
+            x = self.cumPos(index)[0]
+            y = self.cumPos(index)[1]
+            if i[1] == 90:
                 currColour = gfx.COLOURS[11]
-            elif i[1] == -1:
+            elif i[1] == -90:
                 currColour = gfx.COLOURS[7]
-
             pygame.draw.circle(screen, currColour, (x, y), SQUARE_SIZE)
-            angle += i[1]
-            x += math.cos(angle)*i[0] * (DIST)
-            y += math.sin(angle)*i[0] * (DIST)
         self.tick_player(delta)
         self.render_player(screen)
 
     def tick_player(self, delta):
         self.player_dist += delta 
-        self.player_angle = self.cumAngle(self.player_last_tile) * math.pi/2
+        self.player_angle = self.cumAngle(self.player_last_tile) 
         self.player_pos[0] = self.cumPos(self.player_last_tile)[0] + math.cos(self.player_angle) * self.player_dist * DIST
         self.player_pos[1] = self.cumPos(self.player_last_tile)[1] + math.sin(self.player_angle) * self.player_dist * DIST
         if self.player_dist > self.squares[self.player_last_tile][0]: 
@@ -52,7 +49,9 @@ class Board:
 
 
     def cumAngle(self, x):
-        return sum(y for x,y in self.squares[0:x]) 
+        angle = sum(y for x,y in self.squares[0:x-1])  
+        print(angle)
+        return angle
 
     def cumPos(self, n):
         angle = 0
