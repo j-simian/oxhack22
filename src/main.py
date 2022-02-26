@@ -15,6 +15,7 @@ running = False
 timer = None
 music = None
 score = 0
+paused = True
 
 def startJoystick():
     pygame.joystick.init()
@@ -24,13 +25,14 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board
+    global running, timer, score, gfx, board, paused
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
+            paused=False
             try:
                 if event.type == pygame.JOYBUTTONDOWN:
                     dir = ANGLE_MAP[event.button]
@@ -56,7 +58,7 @@ def update():
         score -= 1000
 
 def main():
-    global running, timer, music, score, gfx, board
+    global running, timer, music, score, gfx, board, paused
 
     joystick = startJoystick()
 
@@ -66,9 +68,14 @@ def main():
     music = Music()
     board = Board(beatmap)
 
+    while paused:
+        gfx.render(score, board, 0)
+        handleUI(pygame.event.get())
+
     music.start_music()
     running = True
     last_time = time.time()
+    delta=0
     while running:
         now = time.time()
         delta = now - last_time
