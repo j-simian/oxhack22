@@ -37,7 +37,7 @@ class Gfx:
         board.render(self.screen)
         
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
-        img = myfont.render(f"score: {self.score}", 1, COLOURS[3])
+        img = myfont.render(f"score: {self.score*1000}", 1, COLOURS[3])
         self.screen.blit(img, (100, 100))
 
         self.swapBuffers()
