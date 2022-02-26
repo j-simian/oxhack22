@@ -13,8 +13,9 @@ colours = [
         ]
 
 class Gfx:
-    def __init__(self, timer):
+    def __init__(self, timer, score):
         self.timer = timer
+        self.score = score
         pygame.init()
         self.screen = pygame.display.set_mode((screen_width, screen_height))
         pygame.display.set_caption("Hackathon rhythm game")
@@ -34,4 +35,9 @@ class Gfx:
         global colours
         self.clearScreen() 
         pygame.draw.rect(self.screen, ("#FFFFFF"), pygame.Rect(10, 10, 50, 50))
+        
+        myfont = pygame.font.SysFont("Comic Sans MS", 30)
+        img = myfont.render(f"score: {self.score}", 1, colours[3])
+        self.screen.blit(img, (100, 100))
+
         self.swapBuffers()

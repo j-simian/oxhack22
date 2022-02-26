@@ -7,6 +7,7 @@ import pygame
 running = False
 timer = None
 music = None
+score = 0
 
 def handleUI(events):
     global running, timer
@@ -23,10 +24,10 @@ def handleUI(events):
                 print(f"Miss {timer}")
 
 def main():
-    global running, timer, music
+    global running, timer, music, score
 
     timer = Timer()
-    gfx = Gfx(timer)
+    gfx = Gfx(timer,score)
     music = Music()
 
     running = True
