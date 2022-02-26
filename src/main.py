@@ -32,7 +32,7 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, started, pressedKey
+    global running, timer, score, gfx, board, started, pressedKey, ended
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -48,11 +48,13 @@ def handleUI(events):
                 if event.type == pygame.JOYBUTTONDOWN:
                     if event.button == 9:
                         score = 0
+                        ended = False
                         main()
                     dir = ANGLE_MAP[event.button]
                 else:
                     if event.key == pygame.K_r:
                         score = 0
+                        ended = False
                         main()
                     dir = KEY_MAP[chr(event.key)]
             except (KeyError, ValueError):
