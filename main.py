@@ -18,11 +18,20 @@ def clearScreen():
 def swapBuffers():
     pygame.display.flip()
 
+def handleUI(events):
+    global softDrop
+    for event in events:
+        if event.type == pygame.QUIT:
+            pygame.quit()
+
+
 def main():
     print("Hello world")
     initGfx()
     while True:
-        continue
+        handleUI(pygame.event.get())
 
 if __name__ == "__main__":
     main()
+
+
