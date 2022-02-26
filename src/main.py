@@ -57,7 +57,7 @@ def main():
         last_time = now
 
         timer.update(delta)
-        gfx.render(score, board)
+        gfx.render(score, board, delta)
         handleUI(pygame.event.get())
 
 if __name__ == "__main__":

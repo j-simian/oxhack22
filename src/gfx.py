@@ -35,9 +35,9 @@ class Gfx:
         pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(0,0,200,50))
 
 
-    def render(self,score, board):
+    def render(self,score, board, delta):
         self.clearScreen() 
-        board.render(self.screen)
+        board.render(self.screen, delta)
         
         myfont = pygame.font.SysFont("Comic Sans MS", 30)
         img = myfont.render(f"score: {int(score)}", 1, COLOURS[3])
