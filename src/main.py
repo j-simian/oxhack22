@@ -31,7 +31,14 @@ def handleUI(events):
                 print(f"On time {timer.delta()}")
             else:
                 print(f"Miss {timer.delta()}")
+            timer.register_hit()
             score += timer.calculate_score()
+
+def update():
+    global timer, score
+    if timer.was_last_missed_oneshot():
+        print("Skipped")
+        score -= 1000
 
 def main():
     global running, timer, music, score
@@ -57,8 +64,9 @@ def main():
         last_time = now
 
         timer.update(delta)
-        gfx.render(score, board)
+        update()
         handleUI(pygame.event.get())
+        gfx.render(score, board)
 
 if __name__ == "__main__":
     main()

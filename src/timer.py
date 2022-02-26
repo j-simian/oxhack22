@@ -6,6 +6,8 @@ PERFECT_TOLERANCE_FRAC = 0.2
 class Timer:
     def __init__(self, beatmap):
         self.beatmap = deque(sorted(beatmap))
+        self.hit_last_beat = False
+        self.miss_last_beat = False
 
         self.global_timer = 0
 
@@ -23,8 +25,20 @@ class Timer:
         beat_tol = self._current_beat_tolerance_oneway()
         if just_crossed_time(prev_timer, self.global_timer, beat_time):
             print("BEAT")
+
         if self.global_timer >= beat_time + beat_tol:
             self.beatmap.popleft()
+            self.miss_last_beat = not self.hit_last_beat
+            self.hit_last_beat = False
+
+    def register_hit(self):
+        if self.is_in_beat_window():
+            self.hit_last_beat = True
+
+    def was_last_missed_oneshot(self):
+        tmp = self.miss_last_beat
+        self.miss_last_beat = False
+        return tmp
     
     def _current_beat_tolerance_oneway(self):
         # FIXME Consider distance to previous note as well, not just the next one.
