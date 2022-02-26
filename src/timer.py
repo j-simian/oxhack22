@@ -1,4 +1,3 @@
-import time
 from collections import deque
 
 MAX_TOLERANCE = 0.20
@@ -8,14 +7,11 @@ class Timer:
     def __init__(self, beatmap):
         self.beatmap = deque(sorted(beatmap))
 
-        self.last_time = time.time()
         self.global_timer = 0
 
-    def update(self):
-        now = time.time()
+    def update(self, delta):
         prev_timer = self.global_timer
-        self.global_timer += now - self.last_time
-        self.last_time = now
+        self.global_timer += delta
 
         def just_crossed_time(prev, cur, time):
             return prev < time and cur >= time

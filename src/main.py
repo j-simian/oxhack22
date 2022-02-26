@@ -50,8 +50,13 @@ def main():
 
     music.start_music()
     running = True
+    last_time = time.time()
     while running:
-        timer.update()
+        now = time.time()
+        delta = now - last_time
+        last_time = now
+
+        timer.update(delta)
         gfx.render(score, board)
         handleUI(pygame.event.get())
 
