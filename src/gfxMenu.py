@@ -32,12 +32,7 @@ COMPASSCOLOURS = [
 
 
 class GfxMenu:
-    def __init__(self, timer, bm):
-        self.beatmap  = bm
-        self.health = 1
-        self.timer = timer
-        self.existence = 2
-        self.deltas = deque(([(-10,self.timer.global_timer)]*5))
+    def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Hackathon rhythm game")
@@ -45,58 +40,11 @@ class GfxMenu:
         self.swapBuffers()
     
     def clearScreen(self):
-        # if self.timer.is_in_beat_window():
-        #     delta = self.timer.delta()
-        #     self.screen.fill(COLOURS[0].lerp(COLOURS[4], 1-abs(delta)))
-        # else:
         self.screen.fill(COLOURS[0])
 
     def swapBuffers(self):
         pygame.display.flip()
 
-    def updateDelta(self,dir):
-        self.deltas.popleft()
-        if self.timer.is_valid_hit(dir):
-            self.deltas.append((self.timer.delta(), self.timer.global_timer))
-        else:
-            self.deltas.append((-10, self.timer.global_timer))
-
-        self.swapBuffers()
-
-    def drawErrorTimer(self):
-        pygame.draw.rect(self.screen, COLOURS[2], pygame.Rect(ERROR_WIDTH,ERROR_HEIGHT,200,50))
-        for i in range(5):
-            if abs(self.deltas[i][0])<=1:
-                lerpAmount = abs(self.deltas[i][0])
-            else:
-                lerpAmount = 0.5
-            timeDif = self.timer.global_timer - self.deltas[i][1]
-            if timeDif <= self.existence:
-                h = ((self.existence-timeDif)*50)/self.existence
-            else:
-                h = 0
-            pygame.draw.rect(self.screen, COMPASSCOLOURS[6].lerp(COMPASSCOLOURS[1],lerpAmount), pygame.Rect(ERROR_WIDTH+  95*(self.deltas[i][0]+1),ERROR_HEIGHT,10,h))        
-        
-    def drawHealthBar(self):
-        pygame.draw.rect(self.screen, COMPASSCOLOURS[2], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
-
-    def drawCompass(self):
-        centreX = 70
-        centreY = 90
-        if EDITOR_MODE:
-            return
-        offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
-        for i in range(8):
-            xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*40
-            ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*40
-            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 15)
-
-    def update(self, delta):
-        if self.health < 0:
-            return True
-        else:
-            self.health = min(1, self.health + 0.06*delta)
-        return False
     def handleUIMenu(self, events):
         global kolor
         mouse = pygame.mouse.get_pos()
@@ -104,10 +52,10 @@ class GfxMenu:
             if (SCREEN_WIDTH/2 - 140 <= mouse[0] <= SCREEN_WIDTH/2 + 140) and (20<=mouse[1]<=70):
                 kolor = 3
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    return True
+                    return 1
             else:
                 kolor = 2
-        return False
+        return 0
     def render(self):
         global kolor
         self.clearScreen() 

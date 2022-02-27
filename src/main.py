@@ -24,7 +24,7 @@ pressedKey = None
 paused = False
 ended = False
 completed = False
-
+mapNum = 0
 
 def startJoystick():
     pygame.joystick.init()
@@ -34,18 +34,13 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, started, pressedKey, ended
+    global running, timer, score, gfx, board, started, pressedKey, ended, mapNum
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
             running = False
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
-            if not started:
-                started = True
-                unpause()
-                continue
-
             try:
                 if event.type == pygame.JOYBUTTONDOWN:
                     if event.button == 9:
@@ -108,9 +103,15 @@ def unpause():
     paused = False
 
 def main():
-    global running, timer, music, score, gfx, gfxResults, board, paused, started, completed, beatmap
+    global running, timer, music, score, gfx, gfxResults, board, paused, started, completed, beatmap, mapNum
 
     joystick = startJoystick()
+
+    running = True
+    gfxMenu = GfxMenu()
+    while running and not mapNum:
+        gfxMenu.render()
+        mapNum  = gfxMenu.handleUIMenu(pygame.event.get())
 
     if EDITOR_MODE:
         beatmap = Beatmap()
@@ -119,18 +120,10 @@ def main():
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
-    gfxMenu = GfxMenu(timer, beatmap)
     music = Music()
+    music.start()
     board = Board(beatmap, timer)
 
-    running = True
-    started = False
-    while running and not started:
-        gfxMenu.render()
-        started  = gfxMenu.handleUIMenu(pygame.event.get())
-        if started:
-            unpause()
-        # handleUI(pygame.event.get())
 
     last_time = time.time()
     while running:
