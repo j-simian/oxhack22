@@ -128,6 +128,8 @@ def main():
     while running and not started:
         gfxMenu.render()
         started  = gfxMenu.handleUIMenu(pygame.event.get())
+        if started:
+            unpause()
         # handleUI(pygame.event.get())
 
     last_time = time.time()
