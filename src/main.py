@@ -8,23 +8,24 @@ from beatmap import Beatmap
 import time
 import pygame 
 from board import Board
+from enum import Enum
 
 HEALTH_LOSS = 0.1
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
 KEY_MAP = {'a': 180, 'q': 225, 'w': 270, 'e': 315, 'd': 0, 'x': 45, 's': 90, 'z': 135}
-gfx = None
-gfxResults = None
-board = None
-running = False
-timer = None
-music = None
 score = 0
 whichHits = [0,0,0] #perfects, non-perfect hits, misses
 pressedKey = None
-paused = False
-ended = False
-completed = False
-mapNum = 0
+
+class State(Enum):
+    MENU = 1
+    PRE = 2
+    GAME = 3
+    RESULT_WIN = 4
+    RESULT_LOSS = 5
+    QUIT = 6
+
+state = State.MENU
 
 def startJoystick():
     pygame.joystick.init()
@@ -34,27 +35,27 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, started, pressedKey, ended, completed, whichHits
+    global timer, score, gfx, board, started, pressedKey, ended, completed, whichHits, state
     for event in events:
         if event.type == pygame.QUIT:
-            pygame.quit()
-            running = False
+            quit_game()
+            return
 
         elif (event.type == pygame.KEYDOWN) or (event.type == pygame.JOYBUTTONDOWN):
+            if state == State.PRE:
+                start_game()
+                continue
+
             try:
                 if event.type == pygame.JOYBUTTONDOWN:
                     if event.button == 9:
-                        score = 0
-                        ended = False
-                        main()
+                        reset()
+                        return
                     dir = ANGLE_MAP[event.button]
                 else:
                     if event.key == pygame.K_r:
-                        score = 0
-                        completed=False
-                        ended = False
-                        whichHits=[0,0,0]
-                        main()
+                        reset()
+                        return
                     dir = KEY_MAP[chr(event.key)]
             except (KeyError, ValueError):
                 print("Invalid key", event)
@@ -91,60 +92,78 @@ def update():
             else:
                 whichHits[0]+=1
 
-def pause():
-    global paused, music, ended
-    music.stop()
-    paused = True
-    ended=True
 
-def unpause():
-    global paused, music
+def start_game():
+    global state, music
+    state = State.GAME
     music.start()
-    paused = False
+
+def quit_game():
+    global state
+    state = State.QUIT
+    pygame.quit()
+
+def reset():
+    print("RESET")
+    # TODO
+    exit(1)
 
 def main():
-    global running, timer, music, score, gfx, gfxResults, board, paused, started, completed, beatmap, mapNum
+    global timer, music, score, gfx, gfxResults, board, beatmap, state
 
     joystick = startJoystick()
-    running = True
     gfxMenu = GfxMenu()
-    while running and not mapNum:
-        gfxMenu.render()
-        mapNum  = gfxMenu.handleUIMenu(pygame.event.get())
-
-    if mapNum == 1:
-        beatmap = Beatmap("res/map.json", EDITOR_MODE)
-    elif mapNum == 2:
-        beatmap = Beatmap("res/spidermap.json", EDITOR_MODE)
-    timer = Timer(beatmap)
-    gfx = Gfx(timer, beatmap)
-    gfxResults = GfxResults(timer)
-    music = Music(beatmap.songfile)
-    music.start()
-    board = Board(beatmap, timer)
-
-
+    timer = None
+    gfx = None
+    beatmap = None
+    gfxResults = None
+    music = None
+    board = None
 
     last_time = time.time()
-    while running:
-        if not ended:
-            now = time.time()
-            delta = now - last_time
-            last_time = now
+    while True:
+        now = time.time()
+        delta = now - last_time
+        last_time = now
 
-            if not paused:
-                if timer.update(delta):
-                    pause()
-                    completed=True
-                elif gfx.update(delta):
-                    pause()
-                else:
-                    update()
+        if state == State.MENU:
+            gfxMenu.render()
+            mapNum = gfxMenu.handleUIMenu(pygame.event.get())
+            if mapNum > 0:
+                map_name = {1: "res/map.json", 2: "res/spidermap.json"}[mapNum]
+                beatmap = Beatmap(map_name, EDITOR_MODE)
+                timer = Timer(beatmap)
+                gfx = Gfx(timer, beatmap)
+                gfxResults = GfxResults(timer)
+                board = Board(beatmap, timer)
+                music = Music(beatmap.songfile)
+                state = State.PRE
 
+        elif state == State.PRE:
             gfx.render(score, board)
-        else:
-            gfxResults.render(score, completed, whichHits, board)
-        handleUI(pygame.event.get())
+            handleUI(pygame.event.get())
+
+        elif state == State.GAME:
+            if timer.update(delta):
+                state = State.RESULT_WIN
+                music.stop()
+            elif gfx.update(delta):
+                state = State.RESULT_LOSS
+                music.stop()
+            else:
+                update()
+            gfx.render(score, board)
+            handleUI(pygame.event.get())
+        
+        elif state == State.RESULT_WIN:
+            gfxResults.render(score, True, whichHits, board)
+            handleUI(pygame.event.get())
+        elif state == State.RESULT_LOSS:
+            gfxResults.render(score, False, whichHits, board)
+            handleUI(pygame.event.get())
+
+        elif state == State.QUIT:
+            break
 
     if EDITOR_MODE:
         print(beatmap.to_json())
