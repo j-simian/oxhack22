@@ -22,7 +22,7 @@ class Timer:
             beat_time = self.beatmap.times[self.current_beat]
             beat_tol = self._current_beat_tolerance_oneway()
             if prev_timer < beat_time <= self.global_timer:
-                print("BEAT")
+                pass#print("BEAT")
 
             if self.global_timer >= beat_time + beat_tol:
                 self.current_beat += 1

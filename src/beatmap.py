@@ -57,5 +57,5 @@ class Beatmap:
         return json.dumps({
                 "bpm": self.bpm,
                 "offset": self.offset,
-                "beats": [ [[t], a] for t,a in zip(self.times, self.angles) ]
+                "beats": [ [[t * self.bpm / 60], a] for t,a in zip(self.times, self.angles) ]
             })
