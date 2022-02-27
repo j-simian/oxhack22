@@ -25,6 +25,7 @@ class Timer:
                 pass#print("BEAT")
 
             if self.global_timer >= beat_time + beat_tol:
+                #print(beat_time, beat_tol, beat_time - beat_tol, beat_time + beat_tol)
                 self.current_beat += 1
                 if self.active_beat == self.beatmap.len and not EDITOR_MODE:
                     return True
@@ -41,12 +42,13 @@ class Timer:
     def register_hit(self, dir):
         if not self.is_valid_hit(dir):
             return -1000
-        self.hit_this_beat = True
 
         delta = abs(self.delta())
         if self.is_in_perfect_window():
+            self.hit_this_beat = True
             return 1000
         elif self.is_in_beat_window():
+            self.hit_this_beat = True
             return 1000 * (1 - delta)
         else:
             return -1000
