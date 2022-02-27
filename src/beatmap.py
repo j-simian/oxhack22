@@ -8,9 +8,11 @@ class Beatmap:
         self.angles = []
         self.angles_abs = []
         self.pos = []
+        self.songfile = ""
         
         if file is not None:
             mapjson = json.loads(open(file, "r").read())
+            self.songfile=mapjson["songfile"]
             mapbpm=float(mapjson["bpm"])
             self.bpm = mapbpm
             offset=float(mapjson["offset"])

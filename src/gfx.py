@@ -37,7 +37,8 @@ class Gfx:
         self.existence = 2
         self.deltas = deque(([(-10,self.timer.global_timer)]*5))
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.display = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = self.display.convert_alpha()
         pygame.display.set_caption("Hackathon rhythm game")
         self.clearScreen()
         self.swapBuffers()
@@ -50,6 +51,8 @@ class Gfx:
         self.screen.fill(COLOURS[0])
 
     def swapBuffers(self):
+        self.display.fill((0, 0, 0))
+        self.display.blit(self.screen, (0, 0))
         pygame.display.flip()
 
     def updateDelta(self,dir):
@@ -89,7 +92,9 @@ class Gfx:
         for i in range(8):
             xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*22
             ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*22
-            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 10)
+            c = COMPASSCOLOURS[i]
+            color = pygame.Color(c.r, c.g, c.b, 100)
+            pygame.draw.circle(self.screen, color, (centreX+xdif, centreY+ydif), 10)
 
     def update(self, delta):
         if self.health < 0:

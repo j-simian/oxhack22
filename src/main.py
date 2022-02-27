@@ -34,7 +34,7 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, started, pressedKey, ended, mapNum
+    global running, timer, score, gfx, board, started, pressedKey, ended, completed, whichHits
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -120,7 +120,7 @@ def main():
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
-    music = Music()
+    music = Music(beatmap.songfile)
     music.start()
     board = Board(beatmap, timer)
 
