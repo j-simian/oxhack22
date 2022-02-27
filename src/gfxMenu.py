@@ -6,7 +6,7 @@ from const import EDITOR_MODE
 from gfx import SCREEN_WIDTH, SCREEN_HEIGHT, COMPASSCOLOURS, COLOURS
 
 
-msgs = ["Just Dance", "Spid Dance","Snowdin", "Gentlemen in Paris66"]
+msgs = ["Just Dance", "Spid Dance","Snowdin", "Gentlemen in Paris"]
 kolor = [2]*len(msgs)
 sizes = [(0,0)] * len(msgs)
 class GfxMenu:
