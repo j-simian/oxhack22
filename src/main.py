@@ -156,6 +156,7 @@ def main():
                 state = State.RESULT_LOSS
                 music.stop()
             else:
+                board.update(delta)
                 update()
             gfx.render(score, board)
             handleUI(pygame.event.get())
