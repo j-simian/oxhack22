@@ -39,6 +39,8 @@ class GfxMenu:
                     return 3
                 if event.button == 0:
                     return 4
+                if event.button == 7:
+                    return 5
             for i in range(len(msgs)):
                 if (SCREEN_WIDTH/2 - sizes[i][0]/2 <= mouse[0] <= SCREEN_WIDTH/2 + sizes[i][0]/2) and (20+70*i<=mouse[1]<=20+70*i+sizes[i][1]):
                     kolor[i] = 3

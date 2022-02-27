@@ -3,7 +3,7 @@ from const import EDITOR_MODE
 
 MAX_TOLERANCE = 0.40
 PERFECT_TOLERANCE_FRAC = 0.2
-SMALL_TOLERANCE_FRAC = 0.6
+SMALL_TOLERANCE_FRAC = 0.8
 
 class Timer:
     def __init__(self, beatmap):
