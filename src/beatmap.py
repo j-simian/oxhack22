@@ -1,5 +1,6 @@
 import math
 import json
+from const import EDITOR_MODE
 
 class Beatmap:
     def __init__(self, file, editor):
@@ -54,5 +55,5 @@ class Beatmap:
                 "bpm": self.bpm,
                 "offset": self.offset,
                 "songfile": self.songfile,
-                "beats": [ [[t * self.bpm / 60], a] for t,a in zip(self.times, self.angles) ]
+                "beats": [ [[(t/2 if EDITOR_MODE else t) * self.bpm / 60], a] for t,a in zip(self.times, self.angles) ]
             })
