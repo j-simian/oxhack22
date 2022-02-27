@@ -26,21 +26,30 @@ class Board:
         self.modes_ptr = 0
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
+        self.cameraX = 0
+        self.cameraY = 0
         self.old_active_beat = 0
         self.player_pos = (0, 0)
         self.float_list = []
 
     def _scale_position(self, p):
         x, y = p
-        return (START_TILE[0] + x * self.scale + self.cameraOffsetX*self.scale, START_TILE[1] + y * self.scale+self.cameraOffsetY*self.scale)
+        return (START_TILE[0] + x * self.scale + self.cameraX*self.scale, START_TILE[1] + y * self.scale+self.cameraY*self.scale)
 
     def add_float(self, score):
         self.float_list.append(FloatText(self.timer.global_timer, self.player_pos, score))
 
     def update(self, delta):
         ds = self.want_scale - self.scale
-        if ds > 0:
+        if ds != 0:
             self.scale += (ds / abs(ds)) * min(abs(ds), delta * 50)
+
+        d = self.cameraOffsetX - self.cameraX
+        if d != 0:
+            self.cameraX += (d / abs(d)) * min(abs(d), delta * 10)
+        d = self.cameraOffsetY - self.cameraY
+        if d != 0:
+            self.cameraY += (d / abs(d)) * min(abs(d), delta * 10)
 
     def render(self, screen):
         if self.timer.active_beat > 0 and not EDITOR_MODE:
@@ -101,7 +110,6 @@ class Board:
             self.mode = self.beatmap.modes[self.modes_ptr][0]
             self.want_scale = self.beatmap.modes[self.modes_ptr][2]
             self.modes_ptr += 1
-        # FIXME Don't update camera in render
         if self.mode == 0 or (self.mode == 1 and changed_beat):
             self.cameraOffsetX = -x
             self.cameraOffsetY = -y
