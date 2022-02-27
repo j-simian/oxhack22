@@ -56,8 +56,9 @@ class Board:
         else:
             tp, tt = self.beatmap.pos[self.timer.active_beat-1], self.beatmap.times[self.timer.active_beat-1]
         np, nt = self.beatmap.pos[self.timer.active_beat], self.beatmap.times[self.timer.active_beat]
-        x = tp[0] + (self.timer.global_timer - tt) / (nt - tt) * (np[0] - tp[0])
-        y = tp[1] + (self.timer.global_timer - tt) / (nt - tt) * (np[1] - tp[1])
+        t = (self.timer.global_timer - tt) / (nt - tt) if nt != tt else 0
+        x = tp[0] + t * (np[0] - tp[0])
+        y = tp[1] + t * (np[1] - tp[1])
         pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE)
         if self.mode == 0:
             self.cameraOffsetX = -x
