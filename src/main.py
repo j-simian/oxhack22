@@ -81,6 +81,7 @@ def update():
             if timer.is_valid_hit(dir):
                 print(f"On time {timer.delta()}")
             else:
+                music.play_fail()
                 gfx.health -= HEALTH_LOSS
                 print(f"Miss {timer.delta()}")
             scoreIncrement = timer.register_hit(dir)
