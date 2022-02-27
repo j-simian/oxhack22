@@ -115,8 +115,10 @@ def main():
 
     if EDITOR_MODE:
         beatmap = Beatmap()
-    else:
+    elif mapNum == 1:
         beatmap = Beatmap("res/map.json")
+    elif mapNum == 2:
+        beatmap = Beatmap("res/spidermap.json")
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
