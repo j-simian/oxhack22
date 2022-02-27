@@ -119,12 +119,15 @@ def main():
         beatmap = Beatmap("res/map.json")
     elif mapNum == 2:
         beatmap = Beatmap("res/spidermap.json")
+    
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
     music = Music(beatmap.songfile)
     music.start()
     board = Board(beatmap, timer)
+
+    unpause()
 
 
     last_time = time.time()
