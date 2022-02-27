@@ -83,7 +83,9 @@ class Gfx:
         centreY = SCREEN_HEIGHT/2
         if EDITOR_MODE:
             return
-        offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
+        angleIncrease = self.beatmap.angles_abs[self.timer.current_beat-1]-self.beatmap.angles_abs[self.timer.active_beat-1]
+        angleIncrease = (angleIncrease+180)%360-180
+        offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.active_beat-1]+angleIncrease, max(self.timer.delta(), 0))
         for i in range(8):
             xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*22
             ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*22
