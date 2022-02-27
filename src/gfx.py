@@ -93,7 +93,7 @@ class Gfx:
             xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*22
             ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*22
             c = COMPASSCOLOURS[i]
-            color = pygame.Color(c.r, c.g, c.b, 100)
+            color = pygame.Color(c.r, c.g, c.b, 155)
             pygame.draw.circle(self.screen, color, (centreX+xdif, centreY+ydif), 10)
 
     def update(self, delta):
