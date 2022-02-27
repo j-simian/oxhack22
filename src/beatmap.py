@@ -2,23 +2,20 @@ import math
 import json
 
 class Beatmap:
-    def __init__(self, file=None):
+    def __init__(self, file, editor):
         self.len = 0
         self.times = []
         self.angles = []
         self.angles_abs = []
         self.pos = []
-        self.songfile = ""
         
-        if file is not None:
-            mapjson = json.loads(open(file, "r").read())
-            self.songfile=mapjson["songfile"]
-            mapbpm=float(mapjson["bpm"])
-            self.bpm = mapbpm
-            offset=float(mapjson["offset"])
-            self.offset = offset
-            beatTimes=[]
-            beatAngles=[]
+        mapjson = json.loads(open(file, "r").read())
+        self.songfile=mapjson["songfile"]
+        mapbpm=float(mapjson["bpm"])
+        self.bpm = mapbpm
+        offset=float(mapjson["offset"])
+        self.offset = offset
+        if not editor:
             for each in mapjson["beats"]:
                 beatFraction=each[0]
                 if len(beatFraction)==1:
@@ -27,9 +24,6 @@ class Beatmap:
                     time = offset+(60/mapbpm)*(float(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
                 angle = each[1]
                 self.add(time, angle, False)
-        else:
-            self.bpm = 120
-            self.offset = 0
 
     def add(self, time, angle, abs, adjust=False):
         if adjust:
@@ -59,5 +53,6 @@ class Beatmap:
         return json.dumps({
                 "bpm": self.bpm,
                 "offset": self.offset,
+                "songfile": self.songfile,
                 "beats": [ [[t * self.bpm / 60], a] for t,a in zip(self.times, self.angles) ]
             })

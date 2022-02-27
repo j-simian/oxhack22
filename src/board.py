@@ -57,8 +57,8 @@ class Board:
                 dy = dt * math.sin(self.beatmap.angles_abs[-1] * math.pi / 180)
                 x = dx + self.beatmap.pos[-1][0]
                 y = dy + self.beatmap.pos[-1][1]
-                self.cameraOffsetX = -pos[0]
-                self.cameraOffsetY = -pos[1]
+                self.cameraOffsetX = -x
+                self.cameraOffsetY = -y
             else:
                 x, y = self.beatmap.pos[-1]
 
