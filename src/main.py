@@ -56,7 +56,9 @@ def handleUI(events):
                 else:
                     if event.key == pygame.K_r:
                         score = 0
+                        completed=False
                         ended = False
+                        whichHits=[0,0,0]
                         main()
                     dir = KEY_MAP[chr(event.key)]
             except (KeyError, ValueError):
@@ -82,16 +84,17 @@ def update():
             if timer.is_valid_hit(dir):
                 print(f"On time {timer.delta()}")
             else:
+                music.play_fail()
                 gfx.health -= HEALTH_LOSS
                 print(f"Miss {timer.delta()}")
             scoreIncrement = timer.register_hit(dir)
             score += scoreIncrement
             if scoreIncrement<0:
-                whichHits[0]+=1
+                whichHits[2]+=1
             elif scoreIncrement<1000:
                 whichHits[1]+=1
             else:
-                whichHits[2]+=1
+                whichHits[0]+=1
 
 def pause():
     global paused, music, ended
@@ -145,7 +148,7 @@ def main():
 
             gfx.render(score, board)
         else:
-            gfxResults.render(score, completed, board)
+            gfxResults.render(score, completed, whichHits, board)
         handleUI(pygame.event.get())
 
     if EDITOR_MODE:
