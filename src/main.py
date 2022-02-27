@@ -133,7 +133,7 @@ def main():
             gfxMenu.render()
             mapNum = gfxMenu.handleUIMenu(pygame.event.get())
             if mapNum > 0:
-                map_name = {1: "res/map.json", 2: "res/spidermap.json", 3: "res/snowdin.json", 4: "res/gentleman.json", 5: "res/rishmap.json"}[mapNum]
+                map_name = {1: "res/map.json", 2: "res/spidermap.json", 3: "res/snowdin.json", 4: "res/gentleman.json", 5: "res/rishmap.json", 6: "res/megalovania.json"}[mapNum]
                 beatmap = Beatmap(map_name, EDITOR_MODE)
                 timer = Timer(beatmap)
                 gfx = Gfx(timer, beatmap)
