@@ -28,7 +28,6 @@ COMPASSCOLOURS = [
         Color("#FFFF00") 
 ]
 
-
 class Gfx:
     def __init__(self, timer, bm):
         self.beatmap  = bm

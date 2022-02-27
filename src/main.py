@@ -51,12 +51,13 @@ def handleUI(events):
             pressedKey = dir
 
 def update():
-    global timer, score, gfx, pressedKey, beatmap
+    global timer, score, gfx, pressedKey, beatmap, board
     if not EDITOR_MODE and timer.was_last_missed_oneshot():
         print("Skipped")
         gfx.health -= HEALTH_LOSS
         score -= 1000
         whichHits[2] += 1
+        board.add_float(-1000)
 
     if pressedKey is not None:
         dir = pressedKey
@@ -74,6 +75,7 @@ def update():
                 print(f"Miss {timer.delta()}")
             scoreIncrement = timer.register_hit(dir)
             score += scoreIncrement
+            board.add_float(scoreIncrement)
             if scoreIncrement<0:
                 whichHits[2]+=1
             elif scoreIncrement<1000:
