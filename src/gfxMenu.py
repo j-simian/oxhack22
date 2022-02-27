@@ -5,12 +5,10 @@ from pygame.locals import *
 from const import EDITOR_MODE
 from gfx import SCREEN_WIDTH, SCREEN_HEIGHT, COMPASSCOLOURS, COLOURS
 
-kolor = [2, 2]
-w1 = 0
-w2 = 0
-h1 = 0
-h2 = 0
 
+msgs = ["Just Dance", "Spid Dance"]
+kolor = [2]*len(msgs)
+sizes = [(0,0)] * len(msgs)
 class GfxMenu:
     def __init__(self):
         pygame.init()
@@ -26,36 +24,27 @@ class GfxMenu:
         pygame.display.flip()
 
     def handleUIMenu(self, events):
-        global kolor, w1, w2, h1, h2
+        global kolor, sizes, msgs
         mouse = pygame.mouse.get_pos()
         for event in events:
-            if (SCREEN_WIDTH/2 - w1/2 <= mouse[0] <= SCREEN_WIDTH/2 + w1/2) and (20<=mouse[1]<=20+h1):
-                kolor[0] = 3
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    return 1
-            else:
-                kolor[0] = 2
-            if (SCREEN_WIDTH/2 - w2/2 <= mouse[0] <= SCREEN_WIDTH/2 + w2/2) and (90<=mouse[1]<=90+h2):
-                kolor[1] = 3
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    return 2
-            else:
-                kolor[1] = 2
+            for i in range(len(msgs)):
+                if (SCREEN_WIDTH/2 - sizes[i][0]/2 <= mouse[0] <= SCREEN_WIDTH/2 + sizes[i][0]/2) and (20+70*i<=mouse[1]<=20+70*i+sizes[i][1]):
+                    kolor[i] = 3
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        return i+1
+                else:
+                    kolor[i] = 2
         return 0
 
     def render(self):
-        global kolor, w1, w2, h1, h2
+        global kolor, sizes, msgs
         self.clearScreen() 
         myfont = pygame.font.SysFont("Comic Sans MS", 48)
-
-        w1,h1 = myfont.size("Just Dance")
-        w2,h2 = myfont.size("Spid Dance")
-        pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[0]], pygame.Rect(SCREEN_WIDTH/2-w1/2,20,w1,h1))
-        pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[1]], pygame.Rect(SCREEN_WIDTH/2-w2/2,90,w2,h2))
-
-        img = myfont.render("Just Dance", 1, COLOURS[6])
-        img2 = myfont.render("Spid Dance", 1, COLOURS[6])
-        self.screen.blit(img, (SCREEN_WIDTH/2 - w1/2, 20))
-        self.screen.blit(img2, (SCREEN_WIDTH/2 - w2/2, 90))
+        imgs = [None]*(len(msgs))
+        for i in range(len(msgs)):
+            sizes[i] = myfont.size(msgs[i])
+            imgs[i] = myfont.render(msgs[i], 1, COLOURS[6])
+            pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[i]], pygame.Rect(SCREEN_WIDTH/2-sizes[i][0]/2,20+70*i,sizes[i][0],sizes[i][1]))
+            self.screen.blit(imgs[i], (SCREEN_WIDTH/2 - sizes[i][0]/2, 20+70*i))
 
         self.swapBuffers()
