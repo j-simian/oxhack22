@@ -15,7 +15,7 @@ class Board:
     def __init__(self, beatmap, timer):
         self.timer = timer
         self.beatmap = beatmap
-        self.mode = 1
+        self.mode = 0
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
         self.old_active_beat = 0

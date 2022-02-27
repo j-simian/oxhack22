@@ -26,14 +26,14 @@ class Timer:
 
             if self.global_timer >= beat_time + beat_tol:
                 self.current_beat += 1
+                if self.active_beat == self.beatmap.len and not EDITOR_MODE:
+                    return True
                 self.miss_last_beat = not self.hit_this_beat
                 self.hit_this_beat = False
 
         if self.active_beat < self.beatmap.len:
             if self.global_timer >= self.beatmap.times[self.active_beat]:
                 self.active_beat += 1
-                if self.active_beat == self.beatmap.len and not EDITOR_MODE:
-                    return True
         return False
 
     # Returns the score for this hit.
