@@ -1,9 +1,9 @@
 import pygame
 
 class Music:
-    def __init__(self):
+    def __init__(self,filename):
         pygame.mixer.init()
-        pygame.mixer.music.load("./res/song.wav")
+        pygame.mixer.music.load("./res/"+filename)
 
     def start(self):
         pygame.mixer.music.play()

@@ -120,7 +120,7 @@ def main():
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
     gfxMenu = GfxMenu(timer, beatmap)
-    music = Music()
+    music = Music(beatmap.songfile)
     board = Board(beatmap, timer)
 
     running = True
