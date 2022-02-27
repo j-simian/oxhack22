@@ -6,6 +6,10 @@ from const import EDITOR_MODE
 from gfx import SCREEN_WIDTH, SCREEN_HEIGHT, COMPASSCOLOURS, COLOURS
 
 kolor = [2, 2]
+w1 = 0
+w2 = 0
+h1 = 0
+h2 = 0
 
 class GfxMenu:
     def __init__(self):
@@ -22,16 +26,16 @@ class GfxMenu:
         pygame.display.flip()
 
     def handleUIMenu(self, events):
-        global kolor
+        global kolor, w1, w2, h1, h2
         mouse = pygame.mouse.get_pos()
         for event in events:
-            if (SCREEN_WIDTH/2 - 140 <= mouse[0] <= SCREEN_WIDTH/2 + 140) and (20<=mouse[1]<=70):
+            if (SCREEN_WIDTH/2 - w1/2 <= mouse[0] <= SCREEN_WIDTH/2 + w1/2) and (20<=mouse[1]<=20+h1):
                 kolor[0] = 3
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     return 1
             else:
                 kolor[0] = 2
-            if (SCREEN_WIDTH/2 - 140 <= mouse[0] <= SCREEN_WIDTH/2 + 140) and (80<=mouse[1]<=130):
+            if (SCREEN_WIDTH/2 - w2/2 <= mouse[0] <= SCREEN_WIDTH/2 + w2/2) and (90<=mouse[1]<=90+h2):
                 kolor[1] = 3
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     return 2
@@ -40,7 +44,7 @@ class GfxMenu:
         return 0
 
     def render(self):
-        global kolor
+        global kolor, w1, w2, h1, h2
         self.clearScreen() 
         myfont = pygame.font.SysFont("Comic Sans MS", 48)
 
