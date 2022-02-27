@@ -50,7 +50,7 @@ class Gfx:
         self.screen.fill(COLOURS[0])
 
     def swapBuffers(self):
-        self.display.fill((0, 0, 0))
+        self.display.fill(COLOURS[0])
         self.display.blit(self.screen, (0, 0))
         pygame.display.flip()
 
