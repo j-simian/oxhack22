@@ -42,14 +42,16 @@ class GfxMenu:
     def render(self):
         global kolor
         self.clearScreen() 
-
-        pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[0]], pygame.Rect(SCREEN_WIDTH/2-140,20,260,50))
-        pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[1]], pygame.Rect(SCREEN_WIDTH/2-140,90,260,50))
-
         myfont = pygame.font.SysFont("Comic Sans MS", 48)
+
+        w1,h1 = myfont.size("Just Dance")
+        w2,h2 = myfont.size("Spid Dance")
+        pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[0]], pygame.Rect(SCREEN_WIDTH/2-w1/2,20,w1,h1))
+        pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[1]], pygame.Rect(SCREEN_WIDTH/2-w2/2,90,w2,h2))
+
         img = myfont.render("Just Dance", 1, COLOURS[6])
         img2 = myfont.render("Spid Dance", 1, COLOURS[6])
-        self.screen.blit(img, (SCREEN_WIDTH/2 - 140, 10))
-        self.screen.blit(img2, (SCREEN_WIDTH/2 - 140, 80))
+        self.screen.blit(img, (SCREEN_WIDTH/2 - w1/2, 20))
+        self.screen.blit(img2, (SCREEN_WIDTH/2 - w2/2, 90))
 
         self.swapBuffers()
