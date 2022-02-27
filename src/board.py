@@ -21,6 +21,7 @@ class Board:
         self.timer = timer
         self.beatmap = beatmap
         self.mode = 0
+        self.modes_ptr = 0
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
         self.old_active_beat = 0
@@ -89,6 +90,9 @@ class Board:
         pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position((x, y)), PLAYER_SIZE)
 
         changed_beat = self.timer.active_beat != self.old_active_beat
+        if changed_beat and self.modes_ptr < len(self.beatmap.modes) and self.beatmap.modes[self.modes_ptr][1] <= self.timer.active_beat:
+            self.mode = self.beatmap.modes[self.modes_ptr][0]
+            self.modes_ptr += 1
         # FIXME Don't update camera in render
         if self.mode == 0 or (self.mode == 1 and changed_beat):
             self.cameraOffsetX = -x

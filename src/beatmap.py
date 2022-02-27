@@ -9,6 +9,7 @@ class Beatmap:
         self.angles = []
         self.angles_abs = []
         self.pos = []
+        self.modes = []
         
         mapjson = json.loads(open(file, "r").read())
         self.songfile=mapjson["songfile"]
@@ -24,6 +25,10 @@ class Beatmap:
                     time = offset+(60/mapbpm)*(float(beatFraction[0])+int(beatFraction[1])/int(beatFraction[2]))
                 angle = each[1]
                 self.add(time, angle, False)
+
+            if "modes" in mapjson:
+                for t in mapjson["modes"]:
+                    self.modes.append(t)
 
     def add(self, time, angle, abs, adjust=False):
         if adjust:
