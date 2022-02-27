@@ -113,13 +113,10 @@ def main():
         gfxMenu.render()
         mapNum  = gfxMenu.handleUIMenu(pygame.event.get())
 
-    if EDITOR_MODE:
-        beatmap = Beatmap()
-    elif mapNum == 1:
-        beatmap = Beatmap("res/map.json")
+    if mapNum == 1:
+        beatmap = Beatmap("res/map.json", EDITOR_MODE)
     elif mapNum == 2:
-        beatmap = Beatmap("res/spidermap.json")
-    
+        beatmap = Beatmap("res/spidermap.json", EDITOR_MODE)
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
