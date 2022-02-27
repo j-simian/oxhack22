@@ -42,7 +42,7 @@ class Board:
             if EDITOR_MODE:
                 opacity = 1
             else:
-                opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))
+                opacity = min(1,gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME)))
             color = pygame.Color(color.r, color.g, color.b, int(255 * opacity))
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
