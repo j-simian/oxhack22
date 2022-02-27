@@ -3,24 +3,15 @@ from gfx import Gfx
 from gfxResults import GfxResults
 from gfxMenu import GfxMenu
 from music import Music
-from const import EDITOR_MODE
+from const import EDITOR_MODE, State
 from beatmap import Beatmap
 import time
 import pygame 
 from board import Board
-from enum import Enum
 
 HEALTH_LOSS = 0.1
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
 KEY_MAP = {'a': 180, 'q': 225, 'w': 270, 'e': 315, 'd': 0, 'x': 45, 's': 90, 'z': 135}
-
-class State(Enum):
-    MENU = 1
-    PRE = 2
-    GAME = 3
-    RESULT_WIN = 4
-    RESULT_LOSS = 5
-    QUIT = 6
 
 state = State.MENU
 

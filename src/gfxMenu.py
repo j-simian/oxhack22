@@ -27,7 +27,10 @@ class GfxMenu:
         global kolor, sizes, msgs
         mouse = pygame.mouse.get_pos()
         for event in events:
-            if event.type == pygame.JOYBUTTONDOWN:
+            if event.type == pygame.QUIT:
+                # FIXME Correctly handle this
+                pygame.quit()
+            elif event.type == pygame.JOYBUTTONDOWN:
                 if event.button == 2:
                     return 1
                 if event.button == 1:
