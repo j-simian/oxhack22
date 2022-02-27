@@ -47,8 +47,18 @@ class Board:
 
     def render_player(self, screen):
         if self.timer.active_beat == self.beatmap.len:
-            if self.beatmap.len > 0:
-                pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(self.beatmap.pos[-1]), PLAYER_SIZE)
+            if self.beatmap.len == 0:
+                pos = (0, 0)
+            elif EDITOR_MODE:
+                dt = self.timer.global_timer - self.beatmap.times[-1]
+                dx = dt * math.cos(self.beatmap.angles_abs[-1] * math.pi / 180)
+                dy = dt * math.sin(self.beatmap.angles_abs[-1] * math.pi / 180)
+                pos = (dx + self.beatmap.pos[-1][0], dy + self.beatmap.pos[-1][1])
+                self.cameraOffsetX = -pos[0]
+                self.cameraOffsetY = -pos[1]
+            else:
+                pos = self.beatmap.pos[-1]
+            pygame.draw.circle(screen, gfx.COLOURS[9], self._scale_position(pos), PLAYER_SIZE)
             return
 
         if self.timer.active_beat == 0:
