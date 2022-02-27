@@ -55,6 +55,7 @@ def handleUI(events):
                 else:
                     if event.key == pygame.K_r:
                         score = 0
+                        completed=False
                         ended = False
                         main()
                     dir = KEY_MAP[chr(event.key)]
