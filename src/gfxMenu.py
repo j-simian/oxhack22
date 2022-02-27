@@ -6,7 +6,7 @@ from const import EDITOR_MODE
 from gfx import SCREEN_WIDTH, SCREEN_HEIGHT, COMPASSCOLOURS, COLOURS
 
 
-msgs = ["Just Dance", "Spid Dance","Snowdin"]
+msgs = ["Just Dance", "Spid Dance","Snowdin", "Gentlemen in Paris66"]
 kolor = [2]*len(msgs)
 sizes = [(0,0)] * len(msgs)
 class GfxMenu:
@@ -27,7 +27,10 @@ class GfxMenu:
         global kolor, sizes, msgs
         mouse = pygame.mouse.get_pos()
         for event in events:
-            if event.type == pygame.JOYBUTTONDOWN:
+            if event.type == pygame.QUIT:
+                # FIXME Correctly handle this
+                pygame.quit()
+            elif event.type == pygame.JOYBUTTONDOWN:
                 if event.button == 2:
                     return 1
                 if event.button == 1:
