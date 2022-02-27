@@ -28,7 +28,8 @@ class Board:
         if self.timer.active_beat > 0 and not EDITOR_MODE:
             pos, dir, time = self.beatmap.pos[self.timer.active_beat-1], self.beatmap.angles[self.timer.active_beat-1], self.beatmap.times[self.timer.active_beat-1]
             opacity = gfx.lerp(0,1,(max(0,min(1,-2*(time - self.timer.global_timer)))))
-            color = gfx.COMPASSCOLOURS[dir//45].lerp(gfx.COLOURS[0], 1 - opacity)
+            c = gfx.COMPASSCOLOURS[dir//45]
+            color = pygame.Color(c.r, c.g, c.b, int(255 * opacity))
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
 
         if EDITOR_MODE:
@@ -42,7 +43,7 @@ class Board:
                 opacity = 1
             else:
                 opacity = gfx.lerp(LOOKAHEAD_OPACITY_MIN, 1, min(1, (time - self.timer.global_timer) / LOOKAHEAD_TIME))
-            color = color.lerp(gfx.COLOURS[0], 1 - opacity)
+            color = pygame.Color(color.r, color.g, color.b, int(255 * opacity))
             pygame.draw.circle(screen, color, self._scale_position(pos), SQUARE_SIZE)
         self.render_player(screen)
 
