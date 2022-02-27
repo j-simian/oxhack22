@@ -22,6 +22,7 @@ class Board:
         self.beatmap = beatmap
         self.mode = 0
         self.scale = SCALE
+        self.want_scale = SCALE
         self.modes_ptr = 0
         self.cameraOffsetX = 0
         self.cameraOffsetY = 0
@@ -35,6 +36,11 @@ class Board:
 
     def add_float(self, score):
         self.float_list.append(FloatText(self.timer.global_timer, self.player_pos, score))
+
+    def update(self, delta):
+        ds = self.want_scale - self.scale
+        if ds > 0:
+            self.scale += (ds / abs(ds)) * min(abs(ds), delta * 50)
 
     def render(self, screen):
         if self.timer.active_beat > 0 and not EDITOR_MODE:
@@ -93,7 +99,7 @@ class Board:
         changed_beat = self.timer.active_beat != self.old_active_beat
         if changed_beat and self.modes_ptr < len(self.beatmap.modes) and self.beatmap.modes[self.modes_ptr][1] <= self.timer.active_beat:
             self.mode = self.beatmap.modes[self.modes_ptr][0]
-            self.scale = self.beatmap.modes[self.modes_ptr][2]
+            self.want_scale = self.beatmap.modes[self.modes_ptr][2]
             self.modes_ptr += 1
         # FIXME Don't update camera in render
         if self.mode == 0 or (self.mode == 1 and changed_beat):
