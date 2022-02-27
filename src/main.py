@@ -33,7 +33,7 @@ def startJoystick():
         return 0
 
 def handleUI(events):
-    global running, timer, score, gfx, board, started, pressedKey, ended
+    global running, timer, score, gfx, board, started, pressedKey, ended, completed, whichHits
     for event in events:
         if event.type == pygame.QUIT:
             pygame.quit()
