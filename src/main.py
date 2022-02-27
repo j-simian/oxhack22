@@ -1,6 +1,7 @@
 from timer import Timer
 from gfx import Gfx
 from gfxResults import GfxResults
+from gfxMenu import GfxMenu
 from music import Music
 from const import EDITOR_MODE
 from beatmap import Beatmap
@@ -118,14 +119,18 @@ def main():
     timer = Timer(beatmap)
     gfx = Gfx(timer, beatmap)
     gfxResults = GfxResults(timer)
+    gfxMenu = GfxMenu(timer, beatmap)
     music = Music()
     board = Board(beatmap, timer)
 
     running = True
     started = False
     while running and not started:
-        gfx.render(score, board)
-        handleUI(pygame.event.get())
+        gfxMenu.render()
+        started  = gfxMenu.handleUIMenu(pygame.event.get())
+        if started:
+            unpause()
+        # handleUI(pygame.event.get())
 
     last_time = time.time()
     while running:
