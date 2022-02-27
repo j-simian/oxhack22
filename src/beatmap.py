@@ -27,7 +27,7 @@ class Beatmap:
 
     def add(self, time, angle, abs, adjust=False):
         if adjust:
-            secs_per_tick = 60 / self.bpm / 4
+            secs_per_tick = 60 / self.bpm / 2
             time = round(time / secs_per_tick) * secs_per_tick
 
         self.len += 1
