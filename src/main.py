@@ -106,7 +106,6 @@ def main():
     global running, timer, music, score, gfx, gfxResults, board, paused, started, completed, beatmap, mapNum
 
     joystick = startJoystick()
-
     running = True
     gfxMenu = GfxMenu()
     while running and not mapNum:
@@ -127,7 +126,6 @@ def main():
     music.start()
     board = Board(beatmap, timer)
 
-    unpause()
 
 
     last_time = time.time()
