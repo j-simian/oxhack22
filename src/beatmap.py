@@ -15,7 +15,6 @@ class Beatmap:
         mapbpm=float(mapjson["bpm"])
         self.bpm = mapbpm
         offset=float(mapjson["offset"])
-        self.offset = offset
         if not editor:
             for each in mapjson["beats"]:
                 beatFraction=each[0]
