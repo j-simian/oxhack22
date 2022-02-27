@@ -13,9 +13,6 @@ from enum import Enum
 HEALTH_LOSS = 0.1
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
 KEY_MAP = {'a': 180, 'q': 225, 'w': 270, 'e': 315, 'd': 0, 'x': 45, 's': 90, 'z': 135}
-score = 0
-whichHits = [0,0,0] #perfects, non-perfect hits, misses
-pressedKey = None
 
 class State(Enum):
     MENU = 1
@@ -104,21 +101,35 @@ def quit_game():
     pygame.quit()
 
 def reset():
-    print("RESET")
-    # TODO
-    exit(1)
+    global state, timer, gfx, beatmap, gfxResults, music, board, gfxMenu, score, whichHits, pressedKey
+    state = State.MENU
+    gfxMenu = GfxMenu()
+    timer = None
+    gfx = None
+    gfxResults = None
+    beatmap = None
+    if music:
+        music.stop()
+    music = None
+    board = None
+    score = 0
+    whichHits = [0, 0, 0]
+    pressedKey = None
 
 def main():
-    global timer, music, score, gfx, gfxResults, board, beatmap, state
+    global timer, music, score, gfx, gfxResults, board, beatmap, state, pressedKey, whichHits
 
     joystick = startJoystick()
     gfxMenu = GfxMenu()
     timer = None
     gfx = None
-    beatmap = None
     gfxResults = None
+    beatmap = None
     music = None
     board = None
+    score = 0
+    whichHits = [0, 0, 0]
+    pressedKey = None
 
     last_time = time.time()
     while True:
