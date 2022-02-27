@@ -9,7 +9,7 @@ import time
 import pygame 
 from board import Board
 
-HEALTH_LOSS = 0.1
+HEALTH_LOSS = 0.05
 ANGLE_MAP = {0:180, 6:225, 2:270, 7:315, 3:0, 4:45 ,1:90, 5:135}
 KEY_MAP = {'a': 180, 'q': 225, 'w': 270, 'e': 315, 'd': 0, 'x': 45, 's': 90, 'z': 135}
 
@@ -132,8 +132,7 @@ def main():
             gfxMenu.render()
             mapNum = gfxMenu.handleUIMenu(pygame.event.get())
             if mapNum > 0:
-                map_name = {1: "res/map.json", 2: "res/spidermap.json", 3: "res/snowdin.json", 4: "res/mapgentlemen.json"}[mapNum]
-                print(map_name)
+                map_name = {1: "res/map.json", 2: "res/spidermap.json", 3: "res/snowdin.json", 4: "res/mapgentlemen.json", 5: "res/rishmap.json"}[mapNum]
                 beatmap = Beatmap(map_name, EDITOR_MODE)
                 timer = Timer(beatmap)
                 gfx = Gfx(timer, beatmap)
