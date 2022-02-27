@@ -17,4 +17,3 @@ class Music:
 
     def play_fail(self):
         pygame.mixer.Sound("./res/bonk.mp3").play()
-        pass
