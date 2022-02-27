@@ -56,6 +56,7 @@ def update():
         print("Skipped")
         gfx.health -= HEALTH_LOSS
         score -= 1000
+        whichHits[2] += 1
 
     if pressedKey is not None:
         dir = pressedKey
