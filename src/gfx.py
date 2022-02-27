@@ -79,15 +79,15 @@ class Gfx:
         pygame.draw.rect(self.screen, COMPASSCOLOURS[2], pygame.Rect(0,0,SCREEN_WIDTH*self.health,20))
 
     def drawCompass(self):
-        centreX = 70
-        centreY = 90
+        centreX = SCREEN_WIDTH/2
+        centreY = SCREEN_HEIGHT/2
         if EDITOR_MODE:
             return
         offset = lerp(self.beatmap.angles_abs[self.timer.active_beat-1], self.beatmap.angles_abs[self.timer.current_beat-1], max(self.timer.delta(), 0))
         for i in range(8):
-            xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*40
-            ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*40
-            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 15)
+            xdif = math.cos((i*(math.pi/4))+(offset*math.pi/180))*22
+            ydif = math.sin((i*(math.pi/4))+(offset*math.pi/180))*22
+            pygame.draw.circle(self.screen, COMPASSCOLOURS[i], (centreX+xdif, centreY+ydif), 10)
 
     def update(self, delta):
         if self.health < 0:
