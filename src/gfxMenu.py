@@ -29,6 +29,8 @@ class GfxMenu:
         global kolor, w1, w2, h1, h2
         mouse = pygame.mouse.get_pos()
         for event in events:
+            if event.type == pygame.QUIT:
+                pygame.quit()
             if (SCREEN_WIDTH/2 - w1/2 <= mouse[0] <= SCREEN_WIDTH/2 + w1/2) and (20<=mouse[1]<=20+h1):
                 kolor[0] = 3
                 if event.type == pygame.MOUSEBUTTONDOWN:
