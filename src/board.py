@@ -62,6 +62,7 @@ class Board:
         self.render_floats(screen)
 
     def render_player(self, screen):
+        global SCALE
         if self.timer.active_beat == self.beatmap.len:
             if self.beatmap.len == 0:
                 x, y = (0, 0)
@@ -92,6 +93,7 @@ class Board:
         changed_beat = self.timer.active_beat != self.old_active_beat
         if changed_beat and self.modes_ptr < len(self.beatmap.modes) and self.beatmap.modes[self.modes_ptr][1] <= self.timer.active_beat:
             self.mode = self.beatmap.modes[self.modes_ptr][0]
+            SCALE = self.beatmap.modes[self.modes_ptr][2]
             self.modes_ptr += 1
         # FIXME Don't update camera in render
         if self.mode == 0 or (self.mode == 1 and changed_beat):
