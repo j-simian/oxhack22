@@ -62,7 +62,7 @@ class GfxMenu:
         for i in range(len(msgs)):
             sizes[i] = myfont.size(msgs[i])
             imgs[i] = myfont.render(msgs[i], 1, COLOURS[6])
-            pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[i]], pygame.Rect(SCREEN_WIDTH/2-sizes[i][0]/2,20+70*i,sizes[i][0],sizes[i][1]))
+            pygame.draw.rect(self.screen, COMPASSCOLOURS[kolor[i]], pygame.Rect(SCREEN_WIDTH/2-sizes[i][0]/2-10,20+70*i-5,sizes[i][0]+20,sizes[i][1]+10))
             self.screen.blit(imgs[i], (SCREEN_WIDTH/2 - sizes[i][0]/2, 20+70*i))
 
         self.swapBuffers()
