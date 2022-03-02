@@ -41,7 +41,7 @@ class Timer:
     # Handles double-hit on the same beat as a fail.
     def register_hit(self, dir):
         if not self.is_valid_hit(dir):
-            return -1000
+            return -200
 
         delta = abs(self.delta())
         if self.is_in_perfect_window():
